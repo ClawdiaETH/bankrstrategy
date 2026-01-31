@@ -30,7 +30,7 @@ const Home: NextPage = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-zinc-400 mb-4 font-medium">The Flywheel Token for Bankr Club</p>
+          <p className="text-xl md:text-2xl text-zinc-400 mb-4 font-medium">The flywheel token for Bankr Club</p>
           <p className="text-base text-zinc-500 mb-10 max-w-lg">
             10% sell fee automatically sweeps floor NFTs, rewards holders, and creates unstoppable momentum.
           </p>
@@ -129,7 +129,7 @@ const Home: NextPage = () => {
               <div className="w-14 h-14 rounded-xl bg-orange-500/10 flex items-center justify-center mb-6">
                 <span className="text-2xl">🔄</span>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Flywheel Effect</h3>
+              <h3 className="text-xl font-semibold mb-2">Flywheel effect</h3>
               <div className="inline-block px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-sm font-medium mb-4">
                 Self-reinforcing
               </div>
@@ -144,7 +144,7 @@ const Home: NextPage = () => {
       {/* Flow Diagram */}
       <div className="border-y border-zinc-800 bg-zinc-900/30">
         <div className="max-w-4xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-bold text-center mb-10">The Flywheel</h2>
+          <h2 className="text-2xl font-bold text-center mb-10">The flywheel</h2>
           <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
             <span className="px-4 py-2 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 font-medium">
               Trade $BNKRSTR
