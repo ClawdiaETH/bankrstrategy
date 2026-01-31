@@ -209,14 +209,14 @@ export default function DashboardContent() {
                   target="_blank"
                   className="px-6 py-3 rounded-xl bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors"
                 >
-                  View Source Code →
+                  View source code →
                 </Link>
                 <Link
                   href="https://github.com/ClawdiaETH/projects/blob/main/proposals/bankrstrategy-proposal.md"
                   target="_blank"
                   className="px-6 py-3 rounded-xl bg-orange-500 text-black font-semibold hover:bg-orange-400 transition-colors"
                 >
-                  Read Proposal
+                  Read proposal
                 </Link>
               </div>
             </div>

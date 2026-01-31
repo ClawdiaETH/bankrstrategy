@@ -41,7 +41,7 @@ const Home: NextPage = () => {
               href="/dashboard"
               className="group relative px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl font-semibold text-black hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300 hover:-translate-y-0.5"
             >
-              Launch Dashboard
+              Launch dashboard
               <span className="absolute inset-0 rounded-xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
             </Link>
             <a
@@ -50,7 +50,7 @@ const Home: NextPage = () => {
               rel="noopener noreferrer"
               className="px-8 py-4 bg-zinc-800/50 border border-zinc-700 rounded-xl font-semibold text-zinc-300 hover:bg-zinc-800 hover:border-zinc-600 transition-all duration-300"
             >
-              View Code →
+              View code →
             </a>
           </div>
         </div>
@@ -203,7 +203,7 @@ const Home: NextPage = () => {
             href="/dashboard"
             className="inline-block px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl font-semibold text-black hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300"
           >
-            Open Dashboard →
+            Open dashboard →
           </Link>
         </div>
       </div>
