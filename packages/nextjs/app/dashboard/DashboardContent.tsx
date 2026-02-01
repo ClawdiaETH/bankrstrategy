@@ -11,11 +11,15 @@ import { useAccount, usePublicClient, useWalletClient } from "wagmi";
 const CONTRACTS = {
   token: "0xb80bF44D8bC12b4d1c3b457415e94e554F35d71A" as `0x${string}`,
   sweeper: "0xB05600dd636B419E2F55A819d76CD783eE46bb8A" as `0x${string}`,
+  sweeperV1: "0xAAAB525b6C33C33DaA2dCcb840FCa8d5209CB1b1" as `0x${string}`, // Old sweeper
   rewards: "0x8d0Dc9E8A42743a0256fd40B70f463e4e0c587d9" as `0x${string}`,
   pool: "0xdd2E1CF351D510b0aBA571b65878785126E936d3" as `0x${string}`,
   bankrClub: "0x9FAb8C51f911f0ba6dab64fD6E979BcF6424Ce82" as `0x${string}`,
   treasury: "0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216" as `0x${string}`,
 };
+
+// Historical data for NFT #589 (bought manually before sweeper)
+const MANUAL_NFT_PURCHASE = BigInt("247980820000000000"); // 0.248 ETH for #589
 
 const LINKS = {
   trade: `https://aerodrome.finance/swap?from=eth&to=${CONTRACTS.token}`,
@@ -94,6 +98,11 @@ export default function DashboardContent() {
     callerRewards: bigint;
     availableEth: bigint;
   } | null>(null);
+  const [sweeperV1Stats, setSweeperV1Stats] = useState<{
+    nftsPurchased: bigint;
+    ethSpent: bigint;
+    availableEth: bigint;
+  } | null>(null);
   const [canSweep, setCanSweep] = useState(false);
   const [pendingRewards, setPendingRewards] = useState<bigint>(BigInt(0));
   const [sweeperBalance, setSweeperBalance] = useState<bigint>(BigInt(0));
@@ -143,7 +152,7 @@ export default function DashboardContent() {
         console.error("Error fetching rewards balance:", e);
       }
 
-      // Sweeper stats
+      // Sweeper V2 stats
       try {
         const stats = await publicClient.readContract({
           address: CONTRACTS.sweeper,
@@ -159,7 +168,23 @@ export default function DashboardContent() {
           availableEth: stats[5],
         });
       } catch (e) {
-        console.error("Error fetching sweeper stats:", e);
+        console.error("Error fetching sweeper V2 stats:", e);
+      }
+
+      // Sweeper V1 stats (old sweeper)
+      try {
+        const statsV1 = await publicClient.readContract({
+          address: CONTRACTS.sweeperV1,
+          abi: SWEEPER_ABI,
+          functionName: "getStats",
+        });
+        setSweeperV1Stats({
+          nftsPurchased: statsV1[2],
+          ethSpent: statsV1[3],
+          availableEth: statsV1[5],
+        });
+      } catch (e) {
+        console.error("Error fetching sweeper V1 stats:", e);
       }
 
       // Can sweep?
@@ -372,7 +397,12 @@ export default function DashboardContent() {
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-zinc-400">ETH available</span>
-                <span className="font-medium">{formatEthValue(sweeperStats?.availableEth)} ETH</span>
+                <span className="font-medium">
+                  {formatEthValue(
+                    (sweeperStats?.availableEth || BigInt(0)) + (sweeperV1Stats?.availableEth || BigInt(0)),
+                  )}{" "}
+                  ETH
+                </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-zinc-400">Total swept</span>
@@ -451,12 +481,18 @@ export default function DashboardContent() {
             </div>
             <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
               <div className="text-3xl font-bold text-green-400">
-                {formatEthValue((sweeperStats?.ethSpent || BigInt(0)) + BigInt("524713120000000000"))}
+                {formatEthValue(
+                  (sweeperStats?.ethSpent || BigInt(0)) + (sweeperV1Stats?.ethSpent || BigInt(0)) + MANUAL_NFT_PURCHASE,
+                )}
               </div>
               <div className="text-sm text-zinc-500">ETH spent</div>
             </div>
             <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
-              <div className="text-3xl font-bold text-orange-400">{formatEthValue(sweeperStats?.availableEth)}</div>
+              <div className="text-3xl font-bold text-orange-400">
+                {formatEthValue(
+                  (sweeperStats?.availableEth || BigInt(0)) + (sweeperV1Stats?.availableEth || BigInt(0)),
+                )}
+              </div>
               <div className="text-sm text-zinc-500">ETH ready</div>
             </div>
           </div>
