@@ -438,7 +438,7 @@ export default function DashboardContent() {
                 <>
                   <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl">🦞</span>
+                      <span className="text-2xl">🐚</span>
                       <div>
                         <div className="font-medium">Bankr Club #994</div>
                         <div className="text-xs text-zinc-500">Feb 1, 2026 (via new sweeper)</div>
@@ -459,7 +459,7 @@ export default function DashboardContent() {
                   {Number(treasuryNftCount) > 1 && (
                     <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
                       <div className="flex items-center gap-3">
-                        <span className="text-2xl">🦞</span>
+                        <span className="text-2xl">🐚</span>
                         <div>
                           <div className="font-medium">Bankr Club #589</div>
                           <div className="text-xs text-zinc-500">Feb 1, 2026 (via old sweeper)</div>
