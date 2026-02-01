@@ -49,7 +49,7 @@ export const Footer = () => {
         <ul className="menu menu-horizontal w-full">
           <div className="flex justify-center items-center gap-2 text-sm w-full flex-wrap">
             <div className="flex items-center gap-1">
-              <span>🦞</span>
+              <span>🐚</span>
               <span className="font-semibold">$BNKRSTR</span>
             </div>
             <span>·</span>
