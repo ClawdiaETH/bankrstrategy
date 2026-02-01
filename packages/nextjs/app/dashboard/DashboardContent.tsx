@@ -409,7 +409,7 @@ export default function DashboardContent() {
         {/* NFT Treasury */}
         <div className="p-6 rounded-2xl bg-gradient-to-b from-purple-500/5 to-zinc-900/50 border border-purple-500/20 mb-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-2xl">🏦</div>
+            <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-2xl">💻</div>
             <div>
               <h2 className="text-xl font-semibold">NFT Treasury</h2>
               <p className="text-sm text-zinc-500">Bankr Club NFTs owned by $BNKRSTR</p>
@@ -437,7 +437,7 @@ export default function DashboardContent() {
               {Number(treasuryNftCount) > 0 || true ? (
                 <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">🏦</span>
+                    <span className="text-2xl">💻</span>
                     <div>
                       <div className="font-medium">Bankr Club #589</div>
                       <div className="text-xs text-zinc-500">Feb 1, 2026</div>
