@@ -2,7 +2,7 @@
 
 **A flywheel token that sweeps Bankr Club NFT floor with every trade.**
 
-🎯 **Live on Base:** Trade on [Aerodrome](https://aerodrome.finance/swap?from=eth&to=0xb80bF44D8bC12b4d1c3b457415e94e554F35d71A) | [DexScreener](https://dexscreener.com/base/0xdd2E1CF351D510b0aBA571b65878785126E936d3)
+🎯 **Live on Base:** [Dashboard](https://bankrstrategy.xyz) | [Trade](https://aerodrome.finance/swap?from=eth&to=0xb80bF44D8bC12b4d1c3b457415e94e554F35d71A) | [Chart](https://dexscreener.com/base/0xdd2E1CF351D510b0aBA571b65878785126E936d3)
 
 ## Overview
 
