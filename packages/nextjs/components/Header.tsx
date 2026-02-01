@@ -25,7 +25,7 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/dashboard",
   },
   {
-    label: "Debug Contracts",
+    label: "Debug",
     href: "/debug",
     icon: <BugAntIcon className="h-4 w-4" />,
     devOnly: true,
@@ -49,8 +49,8 @@ export const HeaderMenuLinks = () => {
                 href={href}
                 passHref
                 className={`${
-                  isActive ? "bg-secondary shadow-md" : ""
-                } hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
+                  isActive ? "text-orange-400 bg-orange-500/10" : "text-zinc-400 hover:text-white"
+                } px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2`}
               >
                 {icon}
                 <span>{label}</span>
@@ -63,7 +63,7 @@ export const HeaderMenuLinks = () => {
 };
 
 /**
- * Site header
+ * Site header - integrated dark theme
  */
 export const Header = () => {
   const { targetNetwork } = useTargetNetwork();
@@ -75,36 +75,45 @@ export const Header = () => {
   });
 
   return (
-    <div className="sticky lg:static top-0 navbar bg-base-100 min-h-0 shrink-0 justify-between z-20 shadow-md shadow-secondary px-0 sm:px-2">
-      <div className="navbar-start w-auto lg:w-1/2">
-        <details className="dropdown" ref={burgerMenuRef}>
-          <summary className="ml-1 btn btn-ghost lg:hidden hover:bg-transparent">
-            <Bars3Icon className="h-1/2" />
-          </summary>
-          <ul
-            className="menu menu-compact dropdown-content mt-3 p-2 shadow-sm bg-base-100 rounded-box w-52"
-            onClick={() => {
-              burgerMenuRef?.current?.removeAttribute("open");
-            }}
-          >
-            <HeaderMenuLinks />
-          </ul>
-        </details>
-        <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
-          <div className="flex items-center justify-center w-10 h-10 text-2xl">🐚</div>
-          <div className="flex flex-col">
-            <span className="font-bold leading-tight">BankrStrategy</span>
-            <span className="text-xs text-base-content/70">Floor sweeper on Base</span>
+    <header className="sticky top-0 z-50 border-b border-zinc-800/50 bg-[#0a0a0a]/80 backdrop-blur-xl">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <span className="text-2xl">🐚</span>
+            <div className="hidden sm:block">
+              <span className="font-bold text-white group-hover:text-orange-400 transition-colors">BankrStrategy</span>
+              <span className="text-zinc-500 text-xs block">Floor sweeper on Base</span>
+            </div>
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center">
+            <ul className="flex items-center gap-1">
+              <HeaderMenuLinks />
+            </ul>
+          </nav>
+
+          {/* Right side */}
+          <div className="flex items-center gap-3">
+            <RainbowKitCustomConnectButton />
+            {isLocalNetwork && <FaucetButton />}
+
+            {/* Mobile menu */}
+            <details className="dropdown dropdown-end lg:hidden" ref={burgerMenuRef}>
+              <summary className="btn btn-ghost btn-sm text-zinc-400 hover:text-white">
+                <Bars3Icon className="h-5 w-5" />
+              </summary>
+              <ul
+                className="dropdown-content mt-3 p-2 shadow-xl bg-zinc-900 border border-zinc-800 rounded-xl w-52 z-50"
+                onClick={() => burgerMenuRef?.current?.removeAttribute("open")}
+              >
+                <HeaderMenuLinks />
+              </ul>
+            </details>
           </div>
-        </Link>
-        <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
-          <HeaderMenuLinks />
-        </ul>
+        </div>
       </div>
-      <div className="navbar-end grow mr-4">
-        <RainbowKitCustomConnectButton />
-        {isLocalNetwork && <FaucetButton />}
-      </div>
-    </div>
+    </header>
   );
 };
