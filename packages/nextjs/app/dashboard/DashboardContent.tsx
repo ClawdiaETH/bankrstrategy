@@ -451,7 +451,7 @@ export default function DashboardContent() {
             </div>
             <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
               <div className="text-3xl font-bold text-green-400">
-                {formatEthValue((sweeperStats?.ethSpent || BigInt(0)) + BigInt("525000000000000000"))}
+                {formatEthValue((sweeperStats?.ethSpent || BigInt(0)) + BigInt("524713120000000000"))}
               </div>
               <div className="text-sm text-zinc-500">ETH spent</div>
             </div>
@@ -475,7 +475,7 @@ export default function DashboardContent() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-medium text-green-400">0.277 ETH</div>
+                      <div className="font-medium text-green-400">0.2767 ETH</div>
                       <a
                         href="https://opensea.io/assets/base/0x9fab8c51f911f0ba6dab64fd6e979bcf6424ce82/994"
                         target="_blank"
@@ -496,7 +496,7 @@ export default function DashboardContent() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="font-medium text-green-400">0.248 ETH</div>
+                        <div className="font-medium text-green-400">0.2480 ETH</div>
                         <a
                           href="https://opensea.io/assets/base/0x9fab8c51f911f0ba6dab64fd6e979bcf6424ce82/589"
                           target="_blank"
