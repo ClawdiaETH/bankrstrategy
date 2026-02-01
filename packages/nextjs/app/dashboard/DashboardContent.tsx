@@ -100,21 +100,25 @@ export default function DashboardContent() {
   const [rewardsBalance, setRewardsBalance] = useState<bigint>(BigInt(0));
   const [treasuryNftCount, setTreasuryNftCount] = useState<bigint>(BigInt(0));
 
-  // Fetch data
+  // Fetch data - separate try/catches so one failure doesn't block others
   useEffect(() => {
     async function fetchData() {
       if (!publicClient) return;
 
+      // Token data
       try {
-        // Token data
         const supply = await publicClient.readContract({
           address: CONTRACTS.token,
           abi: TOKEN_ABI,
           functionName: "totalSupply",
         });
         setTotalSupply(supply);
+      } catch (e) {
+        console.error("Error fetching total supply:", e);
+      }
 
-        // Sweeper balance
+      // Sweeper balance
+      try {
         const swBalance = await publicClient.readContract({
           address: CONTRACTS.token,
           abi: TOKEN_ABI,
@@ -122,8 +126,12 @@ export default function DashboardContent() {
           args: [CONTRACTS.sweeper],
         });
         setSweeperBalance(swBalance);
+      } catch (e) {
+        console.error("Error fetching sweeper balance:", e);
+      }
 
-        // Rewards balance
+      // Rewards balance
+      try {
         const rwBalance = await publicClient.readContract({
           address: CONTRACTS.token,
           abi: TOKEN_ABI,
@@ -131,8 +139,12 @@ export default function DashboardContent() {
           args: [CONTRACTS.rewards],
         });
         setRewardsBalance(rwBalance);
+      } catch (e) {
+        console.error("Error fetching rewards balance:", e);
+      }
 
-        // Sweeper stats
+      // Sweeper stats
+      try {
         const stats = await publicClient.readContract({
           address: CONTRACTS.sweeper,
           abi: SWEEPER_ABI,
@@ -146,16 +158,24 @@ export default function DashboardContent() {
           callerRewards: stats[4],
           availableEth: stats[5],
         });
+      } catch (e) {
+        console.error("Error fetching sweeper stats:", e);
+      }
 
-        // Can sweep?
+      // Can sweep?
+      try {
         const sweep = await publicClient.readContract({
           address: CONTRACTS.sweeper,
           abi: SWEEPER_ABI,
           functionName: "canSweep",
         });
         setCanSweep(sweep);
+      } catch (e) {
+        console.error("Error fetching canSweep:", e);
+      }
 
-        // Treasury NFT count
+      // Treasury NFT count
+      try {
         const nftCount = await publicClient.readContract({
           address: CONTRACTS.bankrClub,
           abi: NFT_ABI,
@@ -163,9 +183,13 @@ export default function DashboardContent() {
           args: [CONTRACTS.treasury],
         });
         setTreasuryNftCount(nftCount);
+      } catch (e) {
+        console.error("Error fetching treasury NFT count:", e);
+      }
 
-        // User data
-        if (address) {
+      // User data
+      if (address) {
+        try {
           const uBalance = await publicClient.readContract({
             address: CONTRACTS.token,
             abi: TOKEN_ABI,
@@ -173,7 +197,11 @@ export default function DashboardContent() {
             args: [address],
           });
           setUserBalance(uBalance);
+        } catch (e) {
+          console.error("Error fetching user balance:", e);
+        }
 
+        try {
           const pending = await publicClient.readContract({
             address: CONTRACTS.rewards,
             abi: REWARDS_ABI,
@@ -181,9 +209,9 @@ export default function DashboardContent() {
             args: [address],
           });
           setPendingRewards(pending);
+        } catch (e) {
+          console.error("Error fetching pending rewards:", e);
         }
-      } catch (e) {
-        console.error("Error fetching data:", e);
       }
     }
 
