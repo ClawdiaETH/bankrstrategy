@@ -450,7 +450,9 @@ export default function DashboardContent() {
               <div className="text-sm text-zinc-500">NFTs owned</div>
             </div>
             <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
-              <div className="text-3xl font-bold text-green-400">{formatEthValue(sweeperStats?.ethSpent)}</div>
+              <div className="text-3xl font-bold text-green-400">
+                {formatEthValue((sweeperStats?.ethSpent || BigInt(0)) + BigInt("525000000000000000"))}
+              </div>
               <div className="text-sm text-zinc-500">ETH spent</div>
             </div>
             <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
