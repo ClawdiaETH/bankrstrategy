@@ -434,7 +434,7 @@ export default function DashboardContent() {
           <div className="p-4 rounded-xl bg-zinc-800/30 border border-zinc-700/50">
             <h3 className="font-semibold mb-3 text-sm text-zinc-400">Purchase History</h3>
             <div className="space-y-2">
-              {Number(sweeperStats?.nftsPurchased) > 0 ? (
+              {Number(treasuryNftCount) > 0 ? (
                 <>
                   <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
                     <div className="flex items-center gap-3">
