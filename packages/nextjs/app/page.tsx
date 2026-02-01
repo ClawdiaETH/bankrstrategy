@@ -7,9 +7,10 @@ import type { NextPage } from "next";
 // V2 Contract Addresses
 const CONTRACTS = {
   token: "0xb80bF44D8bC12b4d1c3b457415e94e554F35d71A",
-  sweeper: "0xB05600dd636B419E2F55A819d76CD783eE46bb8A",
+  sweeper: "0xAAAB525b6C33C33DaA2dCcb840FCa8d5209CB1b1",
   rewards: "0x8d0Dc9E8A42743a0256fd40B70f463e4e0c587d9",
   pool: "0xdd2E1CF351D510b0aBA571b65878785126E936d3",
+  bankrClub: "0x9FAb8C51f911f0ba6dab64fD6E979BcF6424Ce82",
 };
 
 const LINKS = {
