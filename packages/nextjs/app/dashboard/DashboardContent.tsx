@@ -418,11 +418,11 @@ export default function DashboardContent() {
 
           <div className="grid sm:grid-cols-3 gap-4 mb-6">
             <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
-              <div className="text-3xl font-bold text-purple-400">{Number(treasuryNftCount) || 1}</div>
+              <div className="text-3xl font-bold text-purple-400">{Number(treasuryNftCount)}</div>
               <div className="text-sm text-zinc-500">NFTs owned</div>
             </div>
             <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
-              <div className="text-3xl font-bold text-green-400">0.248</div>
+              <div className="text-3xl font-bold text-green-400">{formatEthValue(sweeperStats?.ethSpent)}</div>
               <div className="text-sm text-zinc-500">ETH spent</div>
             </div>
             <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
@@ -434,27 +434,51 @@ export default function DashboardContent() {
           <div className="p-4 rounded-xl bg-zinc-800/30 border border-zinc-700/50">
             <h3 className="font-semibold mb-3 text-sm text-zinc-400">Purchase History</h3>
             <div className="space-y-2">
-              {Number(treasuryNftCount) > 0 || true ? (
-                <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">💻</span>
-                    <div>
-                      <div className="font-medium">Bankr Club #589</div>
-                      <div className="text-xs text-zinc-500">Feb 1, 2026</div>
+              {Number(sweeperStats?.nftsPurchased) > 0 ? (
+                <>
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">🦞</span>
+                      <div>
+                        <div className="font-medium">Bankr Club #994</div>
+                        <div className="text-xs text-zinc-500">Feb 1, 2026 (via new sweeper)</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-medium text-green-400">0.277 ETH</div>
+                      <a
+                        href="https://opensea.io/assets/base/0x9fab8c51f911f0ba6dab64fd6e979bcf6424ce82/994"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-purple-400 hover:text-purple-300"
+                      >
+                        View on OpenSea ↗
+                      </a>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="font-medium text-green-400">0.248 ETH</div>
-                    <a
-                      href="https://opensea.io/assets/base/0x9fab8c51f911f0ba6dab64fd6e979bcf6424ce82/589"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-purple-400 hover:text-purple-300"
-                    >
-                      View on OpenSea ↗
-                    </a>
-                  </div>
-                </div>
+                  {Number(treasuryNftCount) > 1 && (
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl">🦞</span>
+                        <div>
+                          <div className="font-medium">Bankr Club #589</div>
+                          <div className="text-xs text-zinc-500">Feb 1, 2026 (via old sweeper)</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-medium text-green-400">0.248 ETH</div>
+                        <a
+                          href="https://opensea.io/assets/base/0x9fab8c51f911f0ba6dab64fd6e979bcf6424ce82/589"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-purple-400 hover:text-purple-300"
+                        >
+                          View on OpenSea ↗
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="text-center py-4 text-zinc-500">No NFTs purchased yet</div>
               )}
