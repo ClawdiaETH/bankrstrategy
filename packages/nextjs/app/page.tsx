@@ -4,6 +4,21 @@ import Image from "next/image";
 import Link from "next/link";
 import type { NextPage } from "next";
 
+// V2 Contract Addresses
+const CONTRACTS = {
+  token: "0xb80bF44D8bC12b4d1c3b457415e94e554F35d71A",
+  sweeper: "0xB05600dd636B419E2F55A819d76CD783eE46bb8A",
+  rewards: "0x8d0Dc9E8A42743a0256fd40B70f463e4e0c587d9",
+  pool: "0xdd2E1CF351D510b0aBA571b65878785126E936d3",
+};
+
+const LINKS = {
+  trade: `https://aerodrome.finance/swap?from=eth&to=${CONTRACTS.token}`,
+  chart: `https://dexscreener.com/base/${CONTRACTS.pool}`,
+  basescan: `https://basescan.org/token/${CONTRACTS.token}`,
+  github: "https://github.com/ClawdiaETH/bankrstrategy",
+};
+
 const Home: NextPage = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-hidden">
@@ -14,8 +29,13 @@ const Home: NextPage = () => {
       </div>
 
       {/* Hero Section */}
-      <div className="relative max-w-6xl mx-auto px-6 pt-20 pb-32">
+      <div className="relative max-w-6xl mx-auto px-6 pt-20 pb-24">
         <div className="flex flex-col items-center text-center">
+          {/* Live Badge */}
+          <div className="mb-6 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-medium animate-pulse">
+            🟢 Live on Base
+          </div>
+
           {/* Logo */}
           <div className="relative mb-8 group">
             <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-amber-500 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
@@ -25,33 +45,47 @@ const Home: NextPage = () => {
           {/* Title */}
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-4">
             <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent">
-              BankrStrategy
+              $BNKRSTR
             </span>
           </h1>
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-zinc-400 mb-4 font-medium">The flywheel token for Bankr Club</p>
           <p className="text-base text-zinc-500 mb-10 max-w-lg">
-            10% sell fee automatically sweeps floor NFTs, rewards holders, and creates unstoppable momentum.
+            10% sell fee automatically sweeps floor NFTs. Buy free, sell feeds the flywheel.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link
-              href="/dashboard"
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <a
+              href={LINKS.trade}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group relative px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl font-semibold text-black hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300 hover:-translate-y-0.5"
             >
-              Launch dashboard
+              Trade on Aerodrome →
               <span className="absolute inset-0 rounded-xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </Link>
+            </a>
             <a
-              href="https://github.com/ClawdiaETH/bankrstrategy"
+              href={LINKS.chart}
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-4 bg-zinc-800/50 border border-zinc-700 rounded-xl font-semibold text-zinc-300 hover:bg-zinc-800 hover:border-zinc-600 transition-all duration-300"
             >
-              View code →
+              View chart 📈
             </a>
+          </div>
+
+          {/* Contract Address */}
+          <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-900/50 border border-zinc-800">
+            <span className="text-zinc-500 text-sm">CA:</span>
+            <code className="text-orange-400 text-sm font-mono">{CONTRACTS.token}</code>
+            <button
+              onClick={() => navigator.clipboard.writeText(CONTRACTS.token)}
+              className="text-zinc-500 hover:text-white transition-colors"
+            >
+              📋
+            </button>
           </div>
         </div>
       </div>
@@ -62,27 +96,38 @@ const Home: NextPage = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-3xl md:text-4xl font-bold text-orange-400">1B</div>
-              <div className="text-sm text-zinc-500 uppercase tracking-wider mt-1">Total Supply</div>
+              <div className="text-sm text-zinc-500 uppercase tracking-wider mt-1">Total supply</div>
             </div>
             <div>
               <div className="text-3xl md:text-4xl font-bold text-amber-400">10%</div>
-              <div className="text-sm text-zinc-500 uppercase tracking-wider mt-1">Sell Fee</div>
+              <div className="text-sm text-zinc-500 uppercase tracking-wider mt-1">Sell fee</div>
             </div>
             <div>
-              <div className="text-3xl md:text-4xl font-bold text-orange-400">1,000</div>
-              <div className="text-sm text-zinc-500 uppercase tracking-wider mt-1">NFT Collection</div>
+              <div className="text-3xl md:text-4xl font-bold text-green-400">FREE</div>
+              <div className="text-sm text-zinc-500 uppercase tracking-wider mt-1">Buy fee</div>
             </div>
             <div>
-              <div className="text-3xl md:text-4xl font-bold text-amber-400">8%</div>
-              <div className="text-sm text-zinc-500 uppercase tracking-wider mt-1">To Floor Sweep</div>
+              <div className="text-3xl md:text-4xl font-bold text-orange-400">8%</div>
+              <div className="text-sm text-zinc-500 uppercase tracking-wider mt-1">To NFT sweeps</div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Chart Embed */}
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        <div className="rounded-2xl overflow-hidden border border-zinc-800">
+          <iframe
+            src={`https://dexscreener.com/base/${CONTRACTS.pool}?embed=1&theme=dark&trades=0&info=0`}
+            className="w-full h-[400px]"
+            title="DexScreener Chart"
+          />
+        </div>
+      </div>
+
       {/* How It Works */}
       <div className="max-w-6xl mx-auto px-6 py-24">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">How It Works</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">How it works</h2>
         <p className="text-zinc-500 text-center mb-16 max-w-lg mx-auto">
           Every sell creates value for the entire ecosystem
         </p>
@@ -95,12 +140,12 @@ const Home: NextPage = () => {
               <div className="w-14 h-14 rounded-xl bg-orange-500/10 flex items-center justify-center mb-6">
                 <span className="text-2xl">🧹</span>
               </div>
-              <h3 className="text-xl font-semibold mb-2">NFT Sweeper</h3>
+              <h3 className="text-xl font-semibold mb-2">NFT sweeper</h3>
               <div className="inline-block px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-sm font-medium mb-4">
                 8% of fees
               </div>
               <p className="text-zinc-400 text-sm leading-relaxed">
-                Automatically buys Bankr Club NFTs from the floor, reducing supply and increasing scarcity.
+                Fees accumulate in the sweeper. When enough builds up, anyone can trigger a sweep to buy floor NFTs.
               </p>
             </div>
           </div>
@@ -112,12 +157,12 @@ const Home: NextPage = () => {
               <div className="w-14 h-14 rounded-xl bg-amber-500/10 flex items-center justify-center mb-6">
                 <span className="text-2xl">🎁</span>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Holder Rewards</h3>
+              <h3 className="text-xl font-semibold mb-2">Holder rewards</h3>
               <div className="inline-block px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-sm font-medium mb-4">
                 1% of fees
               </div>
               <p className="text-zinc-400 text-sm leading-relaxed">
-                NFT holders earn proportional rewards. Own 10 NFTs = 10 shares of the reward pool.
+                Bankr Club NFT holders can claim proportional rewards. 1 NFT = 1 share of the pool.
               </p>
             </div>
           </div>
@@ -146,20 +191,20 @@ const Home: NextPage = () => {
         <div className="max-w-4xl mx-auto px-6 py-16">
           <h2 className="text-2xl font-bold text-center mb-10">The flywheel</h2>
           <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
-            <span className="px-4 py-2 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 font-medium">
-              Trade $BNKRSTR
+            <span className="px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 font-medium">
+              Buy (FREE)
             </span>
             <span className="text-zinc-600">→</span>
-            <span className="px-4 py-2 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300 font-medium">
-              10% Fee
+            <span className="px-4 py-2 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 font-medium">
+              Sell (10% fee)
             </span>
             <span className="text-zinc-600">→</span>
             <span className="px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 font-medium">
-              Sweep Floor
+              Sweep floor
             </span>
             <span className="text-zinc-600">→</span>
             <span className="px-4 py-2 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 font-medium">
-              Floor Rises
+              Floor rises
             </span>
             <span className="text-zinc-600">→</span>
             <span className="px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 font-medium">
@@ -171,59 +216,137 @@ const Home: NextPage = () => {
 
       {/* Architecture */}
       <div className="max-w-4xl mx-auto px-6 py-24">
-        <h2 className="text-3xl font-bold text-center mb-4">Architecture</h2>
-        <p className="text-zinc-500 text-center mb-12">Router-based fee collection for AMM compatibility</p>
+        <h2 className="text-3xl font-bold text-center mb-4">V2 architecture</h2>
+        <p className="text-zinc-500 text-center mb-12">
+          Fee-on-transfer — works automatically with all Aerodrome trades
+        </p>
 
         <div className="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800">
           <div className="flex flex-wrap items-center justify-center gap-3 text-sm mb-6">
-            <span className="px-4 py-2 rounded-lg bg-zinc-800 text-zinc-300 font-medium">User</span>
+            <span className="px-4 py-2 rounded-lg bg-zinc-800 text-zinc-300 font-medium">User sells</span>
             <span className="text-zinc-600">→</span>
-            <span className="px-4 py-2 rounded-lg bg-orange-500/20 text-orange-400 font-medium">BnkrstrRouter</span>
+            <span className="px-4 py-2 rounded-lg bg-orange-500/20 text-orange-400 font-medium">Token takes 10%</span>
             <span className="text-zinc-600">→</span>
             <span className="px-4 py-2 rounded-lg bg-amber-500/20 text-amber-400 font-medium">Aerodrome</span>
             <span className="text-zinc-600">→</span>
-            <span className="px-4 py-2 rounded-lg bg-zinc-800 text-zinc-300 font-medium">ETH/Tokens</span>
+            <span className="px-4 py-2 rounded-lg bg-zinc-800 text-zinc-300 font-medium">ETH out</span>
           </div>
-          <div className="flex justify-center gap-2 flex-wrap">
-            <span className="px-3 py-1 rounded bg-zinc-800 text-xs text-zinc-400">8% Sweeper</span>
-            <span className="px-3 py-1 rounded bg-zinc-800 text-xs text-zinc-400">1% Rewards</span>
-            <span className="px-3 py-1 rounded bg-zinc-800 text-xs text-zinc-400">1% Dev</span>
+          <div className="flex justify-center gap-2 flex-wrap mb-6">
+            <span className="px-3 py-1 rounded bg-orange-500/20 text-xs text-orange-400">8% → Sweeper</span>
+            <span className="px-3 py-1 rounded bg-amber-500/20 text-xs text-amber-400">1% → Rewards</span>
+            <span className="px-3 py-1 rounded bg-zinc-700 text-xs text-zinc-400">1% → Dev</span>
+          </div>
+          <p className="text-center text-zinc-500 text-sm">
+            No special router needed. Just trade on Aerodrome like any token.
+          </p>
+        </div>
+      </div>
+
+      {/* Contracts */}
+      <div className="border-y border-zinc-800 bg-zinc-900/30">
+        <div className="max-w-4xl mx-auto px-6 py-16">
+          <h2 className="text-2xl font-bold text-center mb-10">Contracts (Base)</h2>
+          <div className="space-y-4">
+            {[
+              { name: "$BNKRSTR Token", address: CONTRACTS.token, color: "orange" },
+              { name: "NFT Sweeper", address: CONTRACTS.sweeper, color: "amber" },
+              { name: "Holder Rewards", address: CONTRACTS.rewards, color: "green" },
+              { name: "Aerodrome Pool", address: CONTRACTS.pool, color: "blue" },
+            ].map(contract => (
+              <div
+                key={contract.address}
+                className="flex items-center justify-between p-4 rounded-xl bg-zinc-900/50 border border-zinc-800"
+              >
+                <span className={`text-${contract.color}-400 font-medium`}>{contract.name}</span>
+                <div className="flex items-center gap-2">
+                  <code className="text-zinc-400 text-sm font-mono hidden sm:block">
+                    {contract.address.slice(0, 10)}...{contract.address.slice(-8)}
+                  </code>
+                  <a
+                    href={`https://basescan.org/address/${contract.address}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-zinc-500 hover:text-white transition-colors"
+                  >
+                    ↗
+                  </a>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
       {/* CTA */}
-      <div className="max-w-4xl mx-auto px-6 pb-24">
+      <div className="max-w-4xl mx-auto px-6 py-24">
         <div className="relative p-12 rounded-3xl bg-gradient-to-br from-orange-500/10 via-zinc-900 to-amber-500/10 border border-zinc-800 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Explore?</h2>
+          <h2 className="text-3xl font-bold mb-4">Join the flywheel</h2>
           <p className="text-zinc-400 mb-8 max-w-md mx-auto">
-            Check the dashboard to see live stats, trigger sweeps, and claim rewards.
+            Trade on Aerodrome. Every sell sweeps the Bankr Club floor.
           </p>
-          <Link
-            href="/dashboard"
-            className="inline-block px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl font-semibold text-black hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300"
-          >
-            Open dashboard →
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href={LINKS.trade}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl font-semibold text-black hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300"
+            >
+              Trade now →
+            </a>
+            <Link
+              href="/dashboard"
+              className="inline-block px-8 py-4 bg-zinc-800 border border-zinc-700 rounded-xl font-semibold text-zinc-300 hover:bg-zinc-700 transition-all duration-300"
+            >
+              View dashboard
+            </Link>
+          </div>
         </div>
       </div>
 
       {/* Footer */}
       <footer className="border-t border-zinc-800 py-8">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="text-zinc-500">
-            Built by{" "}
-            <a
-              href="https://x.com/Clawdia_ETH"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-orange-400 hover:text-orange-300 transition-colors"
-            >
-              @Clawdia_ETH
-            </a>{" "}
-            🐚
-          </p>
-          <p className="text-zinc-600 text-sm mt-1">Bankr Club Member #998 • clawdiabot.eth</p>
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-zinc-500">
+              Built by{" "}
+              <a
+                href="https://x.com/Clawdia_ETH"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-orange-400 hover:text-orange-300 transition-colors"
+              >
+                @Clawdia_ETH
+              </a>{" "}
+              🐚
+            </p>
+            <div className="flex gap-4">
+              <a
+                href={LINKS.chart}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-zinc-500 hover:text-white transition-colors"
+              >
+                Chart
+              </a>
+              <a
+                href={LINKS.basescan}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-zinc-500 hover:text-white transition-colors"
+              >
+                Basescan
+              </a>
+              <a
+                href={LINKS.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-zinc-500 hover:text-white transition-colors"
+              >
+                GitHub
+              </a>
+            </div>
+          </div>
+          <p className="text-zinc-600 text-sm mt-4 text-center md:text-left">Bankr Club Member #998 • clawdiabot.eth</p>
         </div>
       </footer>
     </div>
