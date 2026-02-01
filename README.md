@@ -1,76 +1,78 @@
-# BankrStrategy ($BNKRSTR)
+# BankrStrategy ($BNKRSTR) V2
 
 **A flywheel token that sweeps Bankr Club NFT floor with every trade.**
 
-🎯 **Live Demo:** [bankrstrategy.vercel.app](https://bankrstrategy.vercel.app) *(after Vercel deploy)*
+🎯 **Live on Base:** Trade on [Aerodrome](https://aerodrome.finance/swap?from=eth&to=0xb80bF44D8bC12b4d1c3b457415e94e554F35d71A) | [DexScreener](https://dexscreener.com/base/0xdd2E1CF351D510b0aBA571b65878785126E936d3)
 
 ## Overview
 
 $BNKRSTR creates a self-reinforcing flywheel for the Bankr Club ecosystem:
 
 ```
-Trade $BNKRSTR → 10% Sell Fee → Sweep Floor NFTs → Floor Rises → More Interest → More Trades
+Trade $BNKRSTR on Aerodrome → 10% Sell Fee → Sweep Floor NFTs → Floor Rises → More Interest → More Trades
 ```
 
-## Architecture
+## V2 Architecture (Fee-on-Transfer)
 
 ```
-User → BnkrstrRouter → [10% Fee on Sells] → Aerodrome DEX
-              ↓
-   8% NFT Sweeper | 1% Holder Rewards | 1% Dev
+User sells on Aerodrome → Token takes 10% fee automatically
+                                    ↓
+                    8% NFT Sweeper | 1% Holder Rewards | 1% Dev
 ```
 
-**Why Router-Based?**
-- Fee-on-transfer tokens break AMM invariant checks
-- Router approach keeps token simple (standard ERC-20)
-- Full control over fee mechanics
-- Buys are fee-free, only sells trigger fees
+**Why Fee-on-Transfer?**
+- Works automatically with ALL Aerodrome trades
+- No special router required
+- Uses `SupportingFeeOnTransferTokens` swap functions
+- Buys are FREE, only sells trigger fees
 
-## Contracts (Base)
+## V2 Contracts (Base Mainnet)
 
-| Contract | Purpose |
+| Contract | Address |
 |----------|---------|
-| **BnkrstrToken** | Simple ERC-20 (1B supply) |
-| **BnkrstrRouter** | Trading wrapper + fee collection |
-| **NftSweeper** | Accumulates fees → buys floor NFTs |
-| **HolderRewards** | Distributes rewards to NFT holders |
+| **$BNKRSTR Token** | [`0xb80bF44D8bC12b4d1c3b457415e94e554F35d71A`](https://basescan.org/token/0xb80bF44D8bC12b4d1c3b457415e94e554F35d71A) |
+| **NftSweeper** | [`0xB05600dd636B419E2F55A819d76CD783eE46bb8A`](https://basescan.org/address/0xB05600dd636B419E2F55A819d76CD783eE46bb8A) |
+| **HolderRewards** | [`0x8d0Dc9E8A42743a0256fd40B70f463e4e0c587d9`](https://basescan.org/address/0x8d0Dc9E8A42743a0256fd40B70f463e4e0c587d9) |
+| **Aerodrome Pool** | [`0xdd2E1CF351D510b0aBA571b65878785126E936d3`](https://basescan.org/address/0xdd2E1CF351D510b0aBA571b65878785126E936d3) |
 
 ## Fee Split
 
 | Recipient | % | Purpose |
 |-----------|---|---------|
-| NFT Sweeper | 8% | Buys Bankr Club floor NFTs |
-| Holder Rewards | 1% | Distributed to NFT holders |
+| NFT Sweeper | 8% | Accumulates → buys Bankr Club floor NFTs |
+| Holder Rewards | 1% | Distributed to Bankr Club NFT holders |
 | Dev Fund | 1% | Maintenance & development |
+| **Total** | **10%** | On sells only |
 
 ## How It Works
 
 ### Trading
-Users trade via `BnkrstrRouter`:
-- **Buy:** No fee, direct Aerodrome swap
-- **Sell:** 10% fee taken, then Aerodrome swap
+Just trade on Aerodrome like any token:
+- **Buy:** FREE - no fees
+- **Sell:** 10% fee automatically deducted
 
 ### NFT Sweeping
 ```solidity
-// Anyone can trigger (earns 1% reward)
+// Anyone can trigger (earns 1% caller reward!)
 sweeper.sweep()
 ```
 1. Swaps accumulated BNKRSTR → ETH via Aerodrome
-2. Uses ETH to buy floor Bankr Club NFTs
-3. Caller receives 1% as reward
+2. ETH stored for floor NFT purchases
+3. Caller receives 1% of tokens as reward
+
+### NFT Purchasing
+Owner triggers `purchaseNft()` with marketplace data to buy floor Bankr Club NFTs.
 
 ### Holder Rewards
 - 1% of all sell fees accumulate in HolderRewards
-- Bankr Club NFT holders claim proportional share
+- Bankr Club NFT holders can claim proportional share
 - 1 NFT = 1 share (1000 total NFTs)
 
-## Tech Stack
+## Links
 
-- **Blockchain:** Base (Coinbase L2)
-- **DEX:** Aerodrome
-- **Frontend:** Next.js + Scaffold-ETH 2
-- **NFT Purchases:** Relay.link API
-- **Automation:** Gelato (keeper)
+- **Trade:** [Aerodrome](https://aerodrome.finance/swap?from=eth&to=0xb80bF44D8bC12b4d1c3b457415e94e554F35d71A)
+- **Chart:** [DexScreener](https://dexscreener.com/base/0xdd2E1CF351D510b0aBA571b65878785126E936d3)
+- **Bankr Club NFT:** [OpenSea](https://opensea.io/collection/bankrclub)
 
 ## Development
 
@@ -78,21 +80,12 @@ sweeper.sweep()
 # Install
 yarn install
 
-# Start local fork
-yarn fork --network base
-
-# Deploy contracts
-yarn deploy
+# Run tests
+cd packages/foundry && forge test --fork-url https://mainnet.base.org
 
 # Start frontend
 yarn start
 ```
-
-## Links
-
-- [Proposal](https://github.com/ClawdiaETH/projects/blob/main/proposals/bankrstrategy-proposal.md)
-- [Bankr Club NFT](https://opensea.io/collection/bankrclub)
-- [Aerodrome](https://aerodrome.finance)
 
 ## Author
 
