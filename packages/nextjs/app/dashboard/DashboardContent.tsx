@@ -114,51 +114,55 @@ export default function DashboardContent() {
     async function fetchData() {
       if (!publicClient) return;
 
-      // Token data
-      try {
-        const supply = await publicClient.readContract({
-          address: CONTRACTS.token,
-          abi: TOKEN_ABI,
-          functionName: "totalSupply",
-        });
-        setTotalSupply(supply);
-      } catch (e) {
-        console.error("Error fetching total supply:", e);
-      }
+      // Fetch all contract data in parallel for faster loading
+      const [supplyResult, swBalanceResult, rwBalanceResult, statsResult, statsV1Result, sweepResult, nftCountResult] =
+        await Promise.allSettled([
+          publicClient.readContract({
+            address: CONTRACTS.token,
+            abi: TOKEN_ABI,
+            functionName: "totalSupply",
+          }),
+          publicClient.readContract({
+            address: CONTRACTS.token,
+            abi: TOKEN_ABI,
+            functionName: "balanceOf",
+            args: [CONTRACTS.sweeper],
+          }),
+          publicClient.readContract({
+            address: CONTRACTS.token,
+            abi: TOKEN_ABI,
+            functionName: "balanceOf",
+            args: [CONTRACTS.rewards],
+          }),
+          publicClient.readContract({
+            address: CONTRACTS.sweeper,
+            abi: SWEEPER_ABI,
+            functionName: "getStats",
+          }),
+          publicClient.readContract({
+            address: CONTRACTS.sweeperV1,
+            abi: SWEEPER_ABI,
+            functionName: "getStats",
+          }),
+          publicClient.readContract({
+            address: CONTRACTS.sweeper,
+            abi: SWEEPER_ABI,
+            functionName: "canSweep",
+          }),
+          publicClient.readContract({
+            address: CONTRACTS.bankrClub,
+            abi: NFT_ABI,
+            functionName: "balanceOf",
+            args: [CONTRACTS.treasury],
+          }),
+        ]);
 
-      // Sweeper balance
-      try {
-        const swBalance = await publicClient.readContract({
-          address: CONTRACTS.token,
-          abi: TOKEN_ABI,
-          functionName: "balanceOf",
-          args: [CONTRACTS.sweeper],
-        });
-        setSweeperBalance(swBalance);
-      } catch (e) {
-        console.error("Error fetching sweeper balance:", e);
-      }
-
-      // Rewards balance
-      try {
-        const rwBalance = await publicClient.readContract({
-          address: CONTRACTS.token,
-          abi: TOKEN_ABI,
-          functionName: "balanceOf",
-          args: [CONTRACTS.rewards],
-        });
-        setRewardsBalance(rwBalance);
-      } catch (e) {
-        console.error("Error fetching rewards balance:", e);
-      }
-
-      // Sweeper V2 stats
-      try {
-        const stats = await publicClient.readContract({
-          address: CONTRACTS.sweeper,
-          abi: SWEEPER_ABI,
-          functionName: "getStats",
-        });
+      // Process results
+      if (supplyResult.status === "fulfilled") setTotalSupply(supplyResult.value);
+      if (swBalanceResult.status === "fulfilled") setSweeperBalance(swBalanceResult.value);
+      if (rwBalanceResult.status === "fulfilled") setRewardsBalance(rwBalanceResult.value);
+      if (statsResult.status === "fulfilled") {
+        const stats = statsResult.value;
         setSweeperStats({
           totalSwept: stats[0],
           totalEthReceived: stats[1],
@@ -167,76 +171,36 @@ export default function DashboardContent() {
           callerRewards: stats[4],
           availableEth: stats[5],
         });
-      } catch (e) {
-        console.error("Error fetching sweeper V2 stats:", e);
       }
-
-      // Sweeper V1 stats (old sweeper)
-      try {
-        const statsV1 = await publicClient.readContract({
-          address: CONTRACTS.sweeperV1,
-          abi: SWEEPER_ABI,
-          functionName: "getStats",
-        });
+      if (statsV1Result.status === "fulfilled") {
+        const statsV1 = statsV1Result.value;
         setSweeperV1Stats({
           nftsPurchased: statsV1[2],
           ethSpent: statsV1[3],
           availableEth: statsV1[5],
         });
-      } catch (e) {
-        console.error("Error fetching sweeper V1 stats:", e);
       }
+      if (sweepResult.status === "fulfilled") setCanSweep(sweepResult.value);
+      if (nftCountResult.status === "fulfilled") setTreasuryNftCount(nftCountResult.value);
 
-      // Can sweep?
-      try {
-        const sweep = await publicClient.readContract({
-          address: CONTRACTS.sweeper,
-          abi: SWEEPER_ABI,
-          functionName: "canSweep",
-        });
-        setCanSweep(sweep);
-      } catch (e) {
-        console.error("Error fetching canSweep:", e);
-      }
-
-      // Treasury NFT count
-      try {
-        const nftCount = await publicClient.readContract({
-          address: CONTRACTS.bankrClub,
-          abi: NFT_ABI,
-          functionName: "balanceOf",
-          args: [CONTRACTS.treasury],
-        });
-        setTreasuryNftCount(nftCount);
-      } catch (e) {
-        console.error("Error fetching treasury NFT count:", e);
-      }
-
-      // User data
+      // User data (also parallel)
       if (address) {
-        try {
-          const uBalance = await publicClient.readContract({
+        const [uBalanceResult, pendingResult] = await Promise.allSettled([
+          publicClient.readContract({
             address: CONTRACTS.token,
             abi: TOKEN_ABI,
             functionName: "balanceOf",
             args: [address],
-          });
-          setUserBalance(uBalance);
-        } catch (e) {
-          console.error("Error fetching user balance:", e);
-        }
-
-        try {
-          const pending = await publicClient.readContract({
+          }),
+          publicClient.readContract({
             address: CONTRACTS.rewards,
             abi: REWARDS_ABI,
             functionName: "pendingRewards",
             args: [address],
-          });
-          setPendingRewards(pending);
-        } catch (e) {
-          console.error("Error fetching pending rewards:", e);
-        }
+          }),
+        ]);
+        if (uBalanceResult.status === "fulfilled") setUserBalance(uBalanceResult.value);
+        if (pendingResult.status === "fulfilled") setPendingRewards(pendingResult.value);
       }
     }
 
