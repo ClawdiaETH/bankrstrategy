@@ -432,9 +432,9 @@ export default function DashboardContent() {
         <div className="p-6 rounded-2xl bg-gradient-to-b from-purple-500/5 to-zinc-900/50 border border-purple-500/20 mb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center text-xl">🖼️</div>
-            <div>
-              <h2 className="text-lg font-semibold">NFT Treasury</h2>
-              <p className="text-xs text-zinc-500">Bankr Club NFTs owned by $BNKRSTR</p>
+            <div className="leading-tight">
+              <h2 className="text-lg font-semibold leading-none">NFT Treasury</h2>
+              <p className="text-xs text-zinc-500 leading-none mt-0.5">Bankr Club NFTs owned by $BNKRSTR</p>
             </div>
           </div>
 
