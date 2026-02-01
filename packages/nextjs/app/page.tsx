@@ -74,6 +74,12 @@ const Home: NextPage = () => {
             >
               View chart 📈
             </a>
+            <Link
+              href="/dashboard"
+              className="px-8 py-4 bg-purple-500/20 border border-purple-500/30 rounded-xl font-semibold text-purple-300 hover:bg-purple-500/30 hover:border-purple-500/50 transition-all duration-300"
+            >
+              Dashboard 💻
+            </Link>
           </div>
 
           {/* Contract Address */}
