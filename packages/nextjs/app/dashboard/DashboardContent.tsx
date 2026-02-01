@@ -14,6 +14,7 @@ const CONTRACTS = {
   rewards: "0x8d0Dc9E8A42743a0256fd40B70f463e4e0c587d9" as `0x${string}`,
   pool: "0xdd2E1CF351D510b0aBA571b65878785126E936d3" as `0x${string}`,
   bankrClub: "0x9FAb8C51f911f0ba6dab64fD6E979BcF6424Ce82" as `0x${string}`,
+  treasury: "0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216" as `0x${string}`,
 };
 
 const LINKS = {
@@ -64,6 +65,16 @@ const REWARDS_ABI = [
   { name: "claim", type: "function", inputs: [], outputs: [], stateMutability: "nonpayable" },
 ] as const;
 
+const NFT_ABI = [
+  {
+    name: "balanceOf",
+    type: "function",
+    inputs: [{ type: "address" }],
+    outputs: [{ type: "uint256" }],
+    stateMutability: "view",
+  },
+] as const;
+
 export default function DashboardContent() {
   const { address, isConnected } = useAccount();
   const publicClient = usePublicClient({ chainId: base.id });
@@ -87,6 +98,7 @@ export default function DashboardContent() {
   const [pendingRewards, setPendingRewards] = useState<bigint>(BigInt(0));
   const [sweeperBalance, setSweeperBalance] = useState<bigint>(BigInt(0));
   const [rewardsBalance, setRewardsBalance] = useState<bigint>(BigInt(0));
+  const [treasuryNftCount, setTreasuryNftCount] = useState<bigint>(BigInt(0));
 
   // Fetch data
   useEffect(() => {
@@ -142,6 +154,15 @@ export default function DashboardContent() {
           functionName: "canSweep",
         });
         setCanSweep(sweep);
+
+        // Treasury NFT count
+        const nftCount = await publicClient.readContract({
+          address: CONTRACTS.bankrClub,
+          abi: NFT_ABI,
+          functionName: "balanceOf",
+          args: [CONTRACTS.treasury],
+        });
+        setTreasuryNftCount(nftCount);
 
         // User data
         if (address) {
@@ -382,6 +403,73 @@ export default function DashboardContent() {
             >
               {claimLoading ? "Claiming..." : pendingRewards > BigInt(0) ? "💎 Claim rewards" : "No rewards available"}
             </button>
+          </div>
+        </div>
+
+        {/* NFT Treasury */}
+        <div className="p-6 rounded-2xl bg-gradient-to-b from-purple-500/5 to-zinc-900/50 border border-purple-500/20 mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-2xl">🦞</div>
+            <div>
+              <h2 className="text-xl font-semibold">NFT Treasury</h2>
+              <p className="text-sm text-zinc-500">Bankr Club NFTs owned by $BNKRSTR</p>
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-3 gap-4 mb-6">
+            <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
+              <div className="text-3xl font-bold text-purple-400">{treasuryNftCount.toString()}</div>
+              <div className="text-sm text-zinc-500">NFTs owned</div>
+            </div>
+            <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
+              <div className="text-3xl font-bold text-green-400">{formatEthValue(sweeperStats?.ethSpent)}</div>
+              <div className="text-sm text-zinc-500">ETH spent</div>
+            </div>
+            <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
+              <div className="text-3xl font-bold text-orange-400">{formatEthValue(sweeperStats?.availableEth)}</div>
+              <div className="text-sm text-zinc-500">ETH ready</div>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-xl bg-zinc-800/30 border border-zinc-700/50">
+            <h3 className="font-semibold mb-3 text-sm text-zinc-400">Purchase History</h3>
+            <div className="space-y-2">
+              {Number(treasuryNftCount) > 0 ? (
+                <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">🦞</span>
+                    <div>
+                      <div className="font-medium">Bankr Club #589</div>
+                      <div className="text-xs text-zinc-500">Feb 1, 2026</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-medium text-green-400">0.248 ETH</div>
+                    <a
+                      href="https://opensea.io/assets/base/0x9fab8c51f911f0ba6dab64fd6e979bcf6424ce82/589"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-purple-400 hover:text-purple-300"
+                    >
+                      View on OpenSea ↗
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-4 text-zinc-500">No NFTs purchased yet</div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-4 text-center">
+            <a
+              href={`https://opensea.io/${CONTRACTS.treasury}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-purple-400 hover:text-purple-300"
+            >
+              View treasury on OpenSea ↗
+            </a>
           </div>
         </div>
 
