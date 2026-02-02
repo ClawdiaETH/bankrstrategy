@@ -263,41 +263,15 @@ export default function DashboardContent() {
     return () => clearInterval(interval);
   }, [publicClient, address]);
 
-  // Fetch treasury NFTs from Alchemy NFT API
+  // Show treasury NFTs - hardcoded until we get a working API key
+  // Previous Alchemy key expired (403), OpenSea needs auth (401)
   useEffect(() => {
-    async function fetchTreasuryNfts() {
-      try {
-        const alchemyKey = "GFFnS7_zmrBjrUOpH-W5n";
-        const url = `https://base-mainnet.g.alchemy.com/nft/v3/${alchemyKey}/getNFTsForOwner?owner=${CONTRACTS.treasury}&contractAddresses%5B%5D=${CONTRACTS.bankrClub}&withMetadata=true`;
-        
-        const res = await fetch(url);
-        const data = await res.json();
-        
-        if (data.ownedNfts?.length) {
-          const nfts: TreasuryNFT[] = data.ownedNfts.map((nft: { tokenId: string; name: string }) => ({
-            tokenId: nft.tokenId,
-            name: nft.name || `Bankr Club #${nft.tokenId}`,
-            price: "—",
-            date: "—",
-          }));
-          nfts.sort((a, b) => Number(b.tokenId) - Number(a.tokenId));
-          setTreasuryNfts(nfts);
-          return;
-        }
-      } catch (e) {
-        console.error("Alchemy NFT fetch failed:", e);
-      }
-      
-      // Fallback to known NFTs
-      const knownNfts: TreasuryNFT[] = [
-        { tokenId: "994", name: "Bankr Club #994", price: "0.2767 ETH", date: "Feb 1, 2026" },
-        { tokenId: "657", name: "Bankr Club #657", price: "0.2800 ETH", date: "Feb 2, 2026" },
-        { tokenId: "589", name: "Bankr Club #589", price: "0.2480 ETH", date: "Feb 1, 2026" },
-      ];
-      setTreasuryNfts(knownNfts);
-    }
-
-    fetchTreasuryNfts();
+    const knownNfts: TreasuryNFT[] = [
+      { tokenId: "994", name: "Bankr Club #994", price: "0.2767 ETH", date: "Feb 1, 2026" },
+      { tokenId: "657", name: "Bankr Club #657", price: "0.2800 ETH", date: "Feb 2, 2026" },
+      { tokenId: "589", name: "Bankr Club #589", price: "0.2480 ETH", date: "Feb 1, 2026" },
+    ];
+    setTreasuryNfts(knownNfts);
   }, []);
 
   const handleSweep = async () => {
@@ -414,16 +388,18 @@ export default function DashboardContent() {
                   <p className="text-sm text-zinc-400">Connected wallet overview</p>
                 </div>
               </div>
-              
+
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-zinc-800/50 border border-zinc-700/50">
                   <div className="text-sm text-zinc-400 mb-1">$BNKRSTR Balance</div>
                   <div className="text-2xl font-bold text-orange-400">{formatTokens(userBalance)}</div>
                   <div className="text-xs text-zinc-500 mt-1">
-                    {userBalance > BigInt(0) ? `${((Number(userBalance) / Number(totalSupply)) * 100).toFixed(4)}% of supply` : "No tokens held"}
+                    {userBalance > BigInt(0)
+                      ? `${((Number(userBalance) / Number(totalSupply)) * 100).toFixed(4)}% of supply`
+                      : "No tokens held"}
                   </div>
                 </div>
-                
+
                 <div className="p-4 rounded-xl bg-zinc-800/50 border border-zinc-700/50">
                   <div className="text-sm text-zinc-400 mb-1">Pending Rewards</div>
                   <div className="text-2xl font-bold text-amber-400">{formatTokens(pendingRewards)}</div>
@@ -603,7 +579,10 @@ export default function DashboardContent() {
             {treasuryNfts.length > 0 ? (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {treasuryNfts.map(nft => (
-                  <div key={nft.tokenId} className="group relative overflow-hidden rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-purple-500/50 transition-all duration-300">
+                  <div
+                    key={nft.tokenId}
+                    className="group relative overflow-hidden rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-purple-500/50 transition-all duration-300"
+                  >
                     {/* NFT Image */}
                     <div className="aspect-square relative">
                       {nft.imageUrl ? (
@@ -611,22 +590,22 @@ export default function DashboardContent() {
                           src={nft.imageUrl}
                           alt={nft.name}
                           className="w-full h-full object-cover"
-                          onError={(e) => {
+                          onError={e => {
                             // Fallback to placeholder if image fails to load
                             const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                            target.nextElementSibling?.removeAttribute('style');
+                            target.style.display = "none";
+                            target.nextElementSibling?.removeAttribute("style");
                           }}
                         />
                       ) : null}
                       {/* Fallback placeholder */}
-                      <div 
+                      <div
                         className="absolute inset-0 flex items-center justify-center bg-zinc-700/50 text-6xl"
-                        style={nft.imageUrl ? { display: 'none' } : {}}
+                        style={nft.imageUrl ? { display: "none" } : {}}
                       >
                         🖼️
                       </div>
-                      
+
                       {/* Hover overlay */}
                       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <a
