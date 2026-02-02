@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import type { NextPage } from "next";
 import { TradeWidget } from "~~/components/TradeWidget";
@@ -37,17 +38,10 @@ const Home: NextPage = () => {
             🟢 Live on Base
           </div>
 
-          {/* Bankr Computer Animation */}
+          {/* Logo */}
           <div className="relative mb-8 group">
             <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-amber-500 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
-            <video
-              src="/bankr-computer.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="relative w-[180px] h-[180px] object-contain drop-shadow-2xl"
-            />
+            <Image src="/logo.png" alt="BankrStrategy" width={180} height={180} className="relative drop-shadow-2xl" />
           </div>
 
           {/* Title */}
