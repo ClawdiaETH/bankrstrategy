@@ -263,15 +263,31 @@ export default function DashboardContent() {
     return () => clearInterval(interval);
   }, [publicClient, address]);
 
-  // Show treasury NFTs - hardcoded until we get a working API key
-  // Previous Alchemy key expired (403), OpenSea needs auth (401)
+  // Fetch treasury NFTs from Alchemy API
   useEffect(() => {
-    const knownNfts: TreasuryNFT[] = [
-      { tokenId: "994", name: "Bankr Club #994", price: "0.2767 ETH", date: "Feb 1, 2026" },
-      { tokenId: "657", name: "Bankr Club #657", price: "0.2800 ETH", date: "Feb 2, 2026" },
-      { tokenId: "589", name: "Bankr Club #589", price: "0.2480 ETH", date: "Feb 1, 2026" },
-    ];
-    setTreasuryNfts(knownNfts);
+    async function fetchTreasuryNfts() {
+      try {
+        const res = await fetch("/api/treasury-nfts");
+        if (!res.ok) throw new Error("Failed to fetch NFTs");
+
+        const data = await res.json();
+        if (data.nfts?.length) {
+          const nfts: TreasuryNFT[] = data.nfts.map(
+            (nft: { tokenId: string; name: string; imageUrl?: string; description?: string; floorPrice?: number }) => ({
+              tokenId: nft.tokenId,
+              name: nft.name,
+              imageUrl: nft.imageUrl,
+              description: nft.description,
+              price: nft.floorPrice ? `~${nft.floorPrice.toFixed(4)} ETH floor` : undefined,
+            }),
+          );
+          setTreasuryNfts(nfts);
+        }
+      } catch (error) {
+        console.error("Failed to fetch treasury NFTs:", error);
+      }
+    }
+    fetchTreasuryNfts();
   }, []);
 
   const handleSweep = async () => {
