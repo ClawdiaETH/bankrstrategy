@@ -266,23 +266,39 @@ export default function DashboardContent() {
   // Fetch treasury NFTs from Alchemy NFT API
   useEffect(() => {
     async function fetchTreasuryNfts() {
-      // Always show known NFTs immediately (Alchemy API has CORS issues from browser)
+      try {
+        const alchemyKey = "GFFnS7_zmrBjrUOpH-W5n";
+        const url = `https://base-mainnet.g.alchemy.com/nft/v3/${alchemyKey}/getNFTsForOwner?owner=${CONTRACTS.treasury}&contractAddresses%5B%5D=${CONTRACTS.bankrClub}&withMetadata=true`;
+        
+        const res = await fetch(url);
+        const data = await res.json();
+        
+        if (data.ownedNfts?.length) {
+          const nfts: TreasuryNFT[] = data.ownedNfts.map((nft: { tokenId: string; name: string }) => ({
+            tokenId: nft.tokenId,
+            name: nft.name || `Bankr Club #${nft.tokenId}`,
+            price: "—",
+            date: "—",
+          }));
+          nfts.sort((a, b) => Number(b.tokenId) - Number(a.tokenId));
+          setTreasuryNfts(nfts);
+          return;
+        }
+      } catch (e) {
+        console.error("Alchemy NFT fetch failed:", e);
+      }
+      
+      // Fallback to known NFTs
       const knownNfts: TreasuryNFT[] = [
         { tokenId: "994", name: "Bankr Club #994", price: "0.2767 ETH", date: "Feb 1, 2026" },
         { tokenId: "657", name: "Bankr Club #657", price: "0.2800 ETH", date: "Feb 2, 2026" },
         { tokenId: "589", name: "Bankr Club #589", price: "0.2480 ETH", date: "Feb 1, 2026" },
       ];
-      
-      const nftCount = Number(treasuryNftCount);
-      if (nftCount > 0) {
-        setTreasuryNfts(knownNfts.slice(0, nftCount));
-      } else {
-        setTreasuryNfts(knownNfts); // Show all if count not loaded yet
-      }
+      setTreasuryNfts(knownNfts);
     }
 
     fetchTreasuryNfts();
-  }, [treasuryNftCount]);
+  }, []);
 
   const handleSweep = async () => {
     if (!walletClient || !publicClient) return;
