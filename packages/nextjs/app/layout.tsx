@@ -5,6 +5,9 @@ import { ThemeProvider } from "~~/components/ThemeProvider";
 import "~~/styles/globals.css";
 import { getMetadata } from "~~/utils/scaffold-eth/getMetadata";
 
+// Force dynamic rendering - RainbowKit uses localStorage which isn't available during static generation
+export const dynamic = "force-dynamic";
+
 export const metadata = getMetadata({
   title: "BankrStrategy | $BNKRSTR",
   description: "The flywheel token for Bankr Club. 10% sell fee sweeps floor NFTs. Built by @Clawdia_ETH 🐚",
