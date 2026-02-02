@@ -266,36 +266,18 @@ export default function DashboardContent() {
   // Fetch treasury NFTs from Alchemy NFT API
   useEffect(() => {
     async function fetchTreasuryNfts() {
-      try {
-        const alchemyKey = "GFFnS7_zmrBjrUOpH-W5n";
-        const res = await fetch(
-          `https://base-mainnet.g.alchemy.com/nft/v3/${alchemyKey}/getNFTsForOwner?owner=${CONTRACTS.treasury}&contractAddresses[]=${CONTRACTS.bankrClub}&withMetadata=true`
-        );
-        const data = await res.json();
-        
-        if (data.ownedNfts?.length) {
-          const nfts: TreasuryNFT[] = data.ownedNfts.map((nft: { tokenId: string; name: string }) => ({
-            tokenId: nft.tokenId,
-            name: nft.name || `Bankr Club #${nft.tokenId}`,
-            price: "—",
-            date: "—",
-          }));
-          // Sort by tokenId descending
-          nfts.sort((a, b) => Number(b.tokenId) - Number(a.tokenId));
-          setTreasuryNfts(nfts);
-        }
-      } catch (e) {
-        console.error("Failed to fetch NFTs:", e);
-        // Fallback to known NFTs
-        const nftCount = Number(treasuryNftCount);
-        if (nftCount > 0) {
-          const knownNfts: TreasuryNFT[] = [
-            { tokenId: "657", name: "Bankr Club #657", price: "~0.28 ETH", date: "Feb 2, 2026" },
-            { tokenId: "994", name: "Bankr Club #994", price: "~0.28 ETH", date: "Feb 1, 2026" },
-            { tokenId: "589", name: "Bankr Club #589", price: "~0.25 ETH", date: "Feb 1, 2026" },
-          ].slice(0, nftCount);
-          setTreasuryNfts(knownNfts);
-        }
+      // Always show known NFTs immediately (Alchemy API has CORS issues from browser)
+      const knownNfts: TreasuryNFT[] = [
+        { tokenId: "994", name: "Bankr Club #994", price: "0.2767 ETH", date: "Feb 1, 2026" },
+        { tokenId: "657", name: "Bankr Club #657", price: "0.2800 ETH", date: "Feb 2, 2026" },
+        { tokenId: "589", name: "Bankr Club #589", price: "0.2480 ETH", date: "Feb 1, 2026" },
+      ];
+      
+      const nftCount = Number(treasuryNftCount);
+      if (nftCount > 0) {
+        setTreasuryNfts(knownNfts.slice(0, nftCount));
+      } else {
+        setTreasuryNfts(knownNfts); // Show all if count not loaded yet
       }
     }
 
@@ -716,4 +698,3 @@ export default function DashboardContent() {
     </div>
   );
 }
-// Build trigger: 1770009610
