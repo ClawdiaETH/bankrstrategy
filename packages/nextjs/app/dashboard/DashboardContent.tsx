@@ -597,74 +597,56 @@ export default function DashboardContent() {
             </div>
           </div>
 
-          {/* NFT Gallery */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-sm text-zinc-400">NFT Gallery</h3>
+          {/* Purchase History */}
+          <div className="space-y-3">
+            <h3 className="font-semibold text-sm text-zinc-400">Purchase History</h3>
             {treasuryNfts.length > 0 ? (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="space-y-2">
                 {treasuryNfts.map(nft => (
-                  <div
+                  <a
                     key={nft.tokenId}
-                    className="group relative overflow-hidden rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-purple-500/50 transition-all duration-300"
+                    href={`https://opensea.io/assets/base/${CONTRACTS.bankrClub.toLowerCase()}/${nft.tokenId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-4 p-3 rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-purple-500/50 hover:bg-zinc-800 transition-all"
                   >
-                    {/* NFT Image */}
-                    <div className="aspect-square relative">
+                    {/* Small NFT Thumbnail */}
+                    <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-zinc-700/50">
                       {nft.imageUrl ? (
-                        <img
-                          src={nft.imageUrl}
-                          alt={nft.name}
-                          className="w-full h-full object-cover"
-                          onError={e => {
-                            // Fallback to placeholder if image fails to load
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = "none";
-                            target.nextElementSibling?.removeAttribute("style");
-                          }}
-                        />
-                      ) : null}
-                      {/* Fallback placeholder */}
-                      <div
-                        className="absolute inset-0 flex items-center justify-center bg-zinc-700/50 text-6xl"
-                        style={nft.imageUrl ? { display: "none" } : {}}
-                      >
-                        🖼️
-                      </div>
-
-                      {/* Hover overlay */}
-                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <a
-                          href={`https://opensea.io/assets/base/${CONTRACTS.bankrClub.toLowerCase()}/${nft.tokenId}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-4 py-2 bg-purple-500 text-white rounded-lg font-medium hover:bg-purple-400 transition-colors"
-                        >
-                          View on OpenSea ↗
-                        </a>
-                      </div>
+                        <img src={nft.imageUrl} alt={nft.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-2xl">🖼️</div>
+                      )}
                     </div>
 
                     {/* NFT Details */}
-                    <div className="p-4">
-                      <div className="font-semibold text-white mb-1">{nft.name}</div>
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-zinc-400">Purchased</span>
-                        <span className="text-green-400 font-medium">{nft.price}</span>
-                      </div>
-                      <div className="text-xs text-zinc-500 mt-1">{nft.date}</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-white truncate">{nft.name}</div>
+                      <div className="text-xs text-zinc-500">{nft.date}</div>
                     </div>
-                  </div>
+
+                    {/* Price */}
+                    <div className="text-right flex-shrink-0">
+                      <div className="text-green-400 font-semibold">{nft.price}</div>
+                      <div className="text-xs text-zinc-500">purchased</div>
+                    </div>
+                  </a>
                 ))}
               </div>
             ) : Number(treasuryNftCount) > 0 ? (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {/* Loading skeletons */}
                 {Array.from({ length: Number(treasuryNftCount) }).map((_, i) => (
-                  <div key={i} className="rounded-xl bg-zinc-800/50 border border-zinc-700/50 animate-pulse">
-                    <div className="aspect-square bg-zinc-700/50"></div>
-                    <div className="p-4">
-                      <div className="h-4 bg-zinc-700/50 rounded mb-2"></div>
-                      <div className="h-3 bg-zinc-700/50 rounded w-3/4"></div>
+                  <div
+                    key={i}
+                    className="flex items-center gap-4 p-3 rounded-xl bg-zinc-800/50 border border-zinc-700/50 animate-pulse"
+                  >
+                    <div className="w-14 h-14 rounded-lg bg-zinc-700/50"></div>
+                    <div className="flex-1">
+                      <div className="h-4 bg-zinc-700/50 rounded w-32 mb-2"></div>
+                      <div className="h-3 bg-zinc-700/50 rounded w-20"></div>
                     </div>
+                    <div className="h-4 bg-zinc-700/50 rounded w-20"></div>
                   </div>
                 ))}
               </div>
