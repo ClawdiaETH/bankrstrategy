@@ -457,8 +457,8 @@ export default function DashboardContent() {
           {/* Token Overview */}
           <div className="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center">
-                💰
+              <div className="w-12 h-12 rounded-xl overflow-hidden">
+                <Image src="/logo.png" alt="BNKRSTR" width={48} height={48} />
               </div>
               <div>
                 <h3 className="font-semibold">Token overview</h3>
