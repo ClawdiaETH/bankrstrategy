@@ -96,6 +96,7 @@ export default function DashboardContent() {
 
   // State for contract data
   const [totalSupply, setTotalSupply] = useState<bigint>(BigInt(0));
+  const [deadBalance, setDeadBalance] = useState<bigint>(BigInt(0));
   const [userBalance, setUserBalance] = useState<bigint>(BigInt(0));
   const [sweeperStats, setSweeperStats] = useState<{
     totalSwept: bigint;
@@ -170,50 +171,65 @@ export default function DashboardContent() {
       if (!publicClient) return;
 
       // Fetch all contract data in parallel for faster loading
-      const [supplyResult, swBalanceResult, rwBalanceResult, statsResult, statsV1Result, sweepResult, nftCountResult] =
-        await Promise.allSettled([
-          publicClient.readContract({
-            address: CONTRACTS.token,
-            abi: TOKEN_ABI,
-            functionName: "totalSupply",
-          }),
-          publicClient.readContract({
-            address: CONTRACTS.token,
-            abi: TOKEN_ABI,
-            functionName: "balanceOf",
-            args: [CONTRACTS.sweeper],
-          }),
-          publicClient.readContract({
-            address: CONTRACTS.token,
-            abi: TOKEN_ABI,
-            functionName: "balanceOf",
-            args: [CONTRACTS.rewards],
-          }),
-          publicClient.readContract({
-            address: CONTRACTS.sweeper,
-            abi: SWEEPER_ABI,
-            functionName: "getStats",
-          }),
-          publicClient.readContract({
-            address: CONTRACTS.sweeperV1,
-            abi: SWEEPER_ABI,
-            functionName: "getStats",
-          }),
-          publicClient.readContract({
-            address: CONTRACTS.sweeper,
-            abi: SWEEPER_ABI,
-            functionName: "canSweep",
-          }),
-          publicClient.readContract({
-            address: CONTRACTS.bankrClub,
-            abi: NFT_ABI,
-            functionName: "balanceOf",
-            args: [CONTRACTS.treasury],
-          }),
-        ]);
+      const [
+        supplyResult,
+        deadResult,
+        swBalanceResult,
+        rwBalanceResult,
+        statsResult,
+        statsV1Result,
+        sweepResult,
+        nftCountResult,
+      ] = await Promise.allSettled([
+        publicClient.readContract({
+          address: CONTRACTS.token,
+          abi: TOKEN_ABI,
+          functionName: "totalSupply",
+        }),
+        publicClient.readContract({
+          address: CONTRACTS.token,
+          abi: TOKEN_ABI,
+          functionName: "balanceOf",
+          args: ["0x000000000000000000000000000000000000dEaD" as `0x${string}`],
+        }),
+        publicClient.readContract({
+          address: CONTRACTS.token,
+          abi: TOKEN_ABI,
+          functionName: "balanceOf",
+          args: [CONTRACTS.sweeper],
+        }),
+        publicClient.readContract({
+          address: CONTRACTS.token,
+          abi: TOKEN_ABI,
+          functionName: "balanceOf",
+          args: [CONTRACTS.rewards],
+        }),
+        publicClient.readContract({
+          address: CONTRACTS.sweeper,
+          abi: SWEEPER_ABI,
+          functionName: "getStats",
+        }),
+        publicClient.readContract({
+          address: CONTRACTS.sweeperV1,
+          abi: SWEEPER_ABI,
+          functionName: "getStats",
+        }),
+        publicClient.readContract({
+          address: CONTRACTS.sweeper,
+          abi: SWEEPER_ABI,
+          functionName: "canSweep",
+        }),
+        publicClient.readContract({
+          address: CONTRACTS.bankrClub,
+          abi: NFT_ABI,
+          functionName: "balanceOf",
+          args: [CONTRACTS.treasury],
+        }),
+      ]);
 
       // Process results
       if (supplyResult.status === "fulfilled") setTotalSupply(supplyResult.value);
+      if (deadResult.status === "fulfilled") setDeadBalance(deadResult.value);
       if (swBalanceResult.status === "fulfilled") setSweeperBalance(swBalanceResult.value);
       if (rwBalanceResult.status === "fulfilled") setRewardsBalance(rwBalanceResult.value);
       if (statsResult.status === "fulfilled") {
@@ -349,6 +365,10 @@ export default function DashboardContent() {
     return Number(formatEther(value)).toFixed(4);
   };
 
+  // Calculate circulating supply (total - dead address balance)
+  const circulatingSupply = totalSupply - deadBalance;
+  const burnedAmount = deadBalance;
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Gradient background */}
@@ -423,7 +443,7 @@ export default function DashboardContent() {
                   <div className="text-2xl font-bold text-orange-400">{formatTokens(userBalance)}</div>
                   <div className="text-xs text-zinc-500 mt-1">
                     {userBalance > BigInt(0)
-                      ? `${((Number(userBalance) / Number(totalSupply)) * 100).toFixed(4)}% of supply`
+                      ? `${((Number(userBalance) / Number(circulatingSupply)) * 100).toFixed(4)}% of circulating`
                       : "No tokens held"}
                   </div>
                 </div>
@@ -467,9 +487,15 @@ export default function DashboardContent() {
             </div>
             <div className="space-y-3">
               <div className="flex justify-between p-3 rounded-lg bg-zinc-800/50">
-                <span className="text-zinc-400">Total supply</span>
-                <span className="font-semibold">{formatTokens(totalSupply)}</span>
+                <span className="text-zinc-400">Circulating supply</span>
+                <span className="font-semibold">{formatTokens(circulatingSupply)}</span>
               </div>
+              {burnedAmount > BigInt(0) && (
+                <div className="flex justify-between p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                  <span className="text-red-400">Burned supply</span>
+                  <span className="font-semibold text-red-400">🔥 {formatTokens(burnedAmount)}</span>
+                </div>
+              )}
               <div className="flex justify-between p-3 rounded-lg bg-zinc-800/50">
                 <span className="text-zinc-400">Your balance</span>
                 <span className="font-semibold text-orange-400">
