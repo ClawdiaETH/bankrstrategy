@@ -142,8 +142,65 @@ const Home: NextPage = () => {
         </div>
       </div>
 
-      {/* How It Works */}
+      {/* Why Bankr */}
       <div className="max-w-6xl mx-auto px-6 py-24">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Why Bankr?</h2>
+        <p className="text-zinc-500 text-center mb-16 max-w-2xl mx-auto">
+          Bankr is the financial layer for AI agents — wallets, trading, payments, and DeFi. Bankr Club NFTs are the
+          membership pass to this ecosystem.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
+          {/* The Ecosystem */}
+          <div className="p-8 rounded-2xl bg-gradient-to-br from-blue-500/10 via-zinc-900 to-purple-500/10 border border-zinc-800">
+            <div className="w-14 h-14 rounded-xl bg-blue-500/10 flex items-center justify-center mb-6">
+              <span className="text-2xl">🤖</span>
+            </div>
+            <h3 className="text-xl font-semibold mb-3">The agent economy</h3>
+            <p className="text-zinc-400 text-sm leading-relaxed mb-4">
+              AI agents are going onchain. They need wallets to trade, pay for services, and coordinate with each other.
+              Bankr makes this possible — and Bankr Club members are at the center of it.
+            </p>
+            <ul className="space-y-2 text-sm text-zinc-500">
+              <li className="flex items-center gap-2">
+                <span className="text-green-400">✓</span> Wallets for AI agents
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-green-400">✓</span> Trading & DeFi integration
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-green-400">✓</span> Agent-to-agent payments
+              </li>
+            </ul>
+          </div>
+
+          {/* How We Support It */}
+          <div className="p-8 rounded-2xl bg-gradient-to-br from-orange-500/10 via-zinc-900 to-amber-500/10 border border-zinc-800">
+            <div className="w-14 h-14 rounded-xl bg-orange-500/10 flex items-center justify-center mb-6">
+              <span className="text-2xl">🐚</span>
+            </div>
+            <h3 className="text-xl font-semibold mb-3">How BankrStrategy helps</h3>
+            <p className="text-zinc-400 text-sm leading-relaxed mb-4">
+              Every $BNKRSTR sell automatically sweeps Bankr Club NFTs from the floor. This creates constant buy
+              pressure, supports the floor price, and rewards existing holders.
+            </p>
+            <ul className="space-y-2 text-sm text-zinc-500">
+              <li className="flex items-center gap-2">
+                <span className="text-orange-400">✓</span> Sweeps floor NFTs automatically
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-orange-400">✓</span> Rewards for NFT holders
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-orange-400">✓</span> Self-sustaining flywheel
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* How It Works */}
+      <div className="max-w-6xl mx-auto px-6 py-24 pt-0">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">How it works</h2>
         <p className="text-zinc-500 text-center mb-16 max-w-lg mx-auto">
           Every sell creates value for the entire ecosystem
@@ -228,34 +285,6 @@ const Home: NextPage = () => {
               Repeat ↻
             </span>
           </div>
-        </div>
-      </div>
-
-      {/* Architecture */}
-      <div className="max-w-4xl mx-auto px-6 py-24">
-        <h2 className="text-3xl font-bold text-center mb-4">V2 architecture</h2>
-        <p className="text-zinc-500 text-center mb-12">
-          Fee-on-transfer — works automatically with all Aerodrome trades
-        </p>
-
-        <div className="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800">
-          <div className="flex flex-wrap items-center justify-center gap-3 text-sm mb-6">
-            <span className="px-4 py-2 rounded-lg bg-zinc-800 text-zinc-300 font-medium">User sells</span>
-            <span className="text-zinc-600">→</span>
-            <span className="px-4 py-2 rounded-lg bg-orange-500/20 text-orange-400 font-medium">Token takes 10%</span>
-            <span className="text-zinc-600">→</span>
-            <span className="px-4 py-2 rounded-lg bg-amber-500/20 text-amber-400 font-medium">Aerodrome</span>
-            <span className="text-zinc-600">→</span>
-            <span className="px-4 py-2 rounded-lg bg-zinc-800 text-zinc-300 font-medium">ETH out</span>
-          </div>
-          <div className="flex justify-center gap-2 flex-wrap mb-6">
-            <span className="px-3 py-1 rounded bg-orange-500/20 text-xs text-orange-400">8% → Sweeper</span>
-            <span className="px-3 py-1 rounded bg-amber-500/20 text-xs text-amber-400">1% → Rewards</span>
-            <span className="px-3 py-1 rounded bg-zinc-700 text-xs text-zinc-400">1% → Dev</span>
-          </div>
-          <p className="text-center text-zinc-500 text-sm">
-            No special router needed. Just trade on Aerodrome like any token.
-          </p>
         </div>
       </div>
 
