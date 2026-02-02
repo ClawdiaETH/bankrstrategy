@@ -254,18 +254,18 @@ const Home: NextPage = () => {
           </div>
 
           {/* Card 3 */}
-          <div className="group relative p-8 rounded-2xl bg-gradient-to-b from-zinc-800/50 to-zinc-900/50 border border-zinc-800 hover:border-orange-500/30 transition-all duration-300">
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="group relative p-8 rounded-2xl bg-gradient-to-b from-zinc-800/50 to-zinc-900/50 border border-zinc-800 hover:border-purple-500/30 transition-all duration-300">
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative">
-              <div className="w-14 h-14 rounded-xl bg-orange-500/10 flex items-center justify-center mb-6">
-                <span className="text-2xl">🔄</span>
+              <div className="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center mb-6">
+                <span className="text-2xl">🛠️</span>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Flywheel effect</h3>
-              <div className="inline-block px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-sm font-medium mb-4">
-                Self-reinforcing
+              <h3 className="text-xl font-semibold mb-2">Dev fund</h3>
+              <div className="inline-block px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-sm font-medium mb-4">
+                1% of fees
               </div>
               <p className="text-zinc-400 text-sm leading-relaxed">
-                More volume → more sweeps → higher floor → more attention → more volume.
+                Supports ongoing development, infrastructure, and ecosystem growth. Ensuring sustainable innovation.
               </p>
             </div>
           </div>
