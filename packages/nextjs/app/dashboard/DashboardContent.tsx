@@ -118,6 +118,52 @@ export default function DashboardContent() {
   const [treasuryNftCount, setTreasuryNftCount] = useState<bigint>(BigInt(0));
   const [treasuryNfts, setTreasuryNfts] = useState<TreasuryNFT[]>([]);
 
+  // Load from Edge Config cache first (instant)
+  useEffect(() => {
+    async function loadFromCache() {
+      try {
+        const res = await fetch("/api/dashboard-data");
+        if (!res.ok) return;
+
+        const data = await res.json();
+        if (!data || data.error) return;
+
+        // Populate state from cache
+        setTotalSupply(BigInt(data.totalSupply || 0));
+        setSweeperBalance(BigInt(data.sweeperBalance || 0));
+        setRewardsBalance(BigInt(data.rewardsBalance || 0));
+        setCanSweep(data.canSweep || false);
+        setTreasuryNftCount(BigInt(data.treasuryNftCount || 0));
+
+        if (data.sweeper) {
+          setSweeperStats({
+            totalSwept: BigInt(data.sweeper.totalSwept || 0),
+            totalEthReceived: BigInt(data.sweeper.totalEthReceived || 0),
+            nftsPurchased: BigInt(data.sweeper.nftsPurchased || 0),
+            ethSpent: BigInt(data.sweeper.ethSpent || 0),
+            callerRewards: BigInt(data.sweeper.callerRewards || 0),
+            availableEth: BigInt(data.sweeper.availableEth || 0),
+          });
+        }
+
+        if (data.sweeperV1) {
+          setSweeperV1Stats({
+            nftsPurchased: BigInt(data.sweeperV1.nftsPurchased || 0),
+            ethSpent: BigInt(data.sweeperV1.ethSpent || 0),
+            availableEth: BigInt(data.sweeperV1.availableEth || 0),
+          });
+        }
+
+        if (data.treasuryNfts?.length) {
+          setTreasuryNfts(data.treasuryNfts);
+        }
+      } catch {
+        // Cache not available, will load from RPC
+      }
+    }
+    loadFromCache();
+  }, []);
+
   // Fetch data - separate try/catches so one failure doesn't block others
   useEffect(() => {
     async function fetchData() {
