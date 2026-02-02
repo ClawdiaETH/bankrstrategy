@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-// Image import removed - using video element for logo
+import Image from "next/image";
 import Link from "next/link";
 import { formatEther } from "viem";
 import { base } from "viem/chains";
@@ -362,14 +362,7 @@ export default function DashboardContent() {
         <div className="text-center mb-12">
           <Link href="/" className="inline-block">
             <div className="flex justify-center mb-6">
-              <video
-                src="/bankr-computer.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-[80px] h-[80px] object-contain"
-              />
+              <Image src="/logo.png" alt="BankrStrategy" width={80} height={80} />
             </div>
           </Link>
           <h1 className="text-4xl md:text-5xl font-bold mb-2">
@@ -465,7 +458,7 @@ export default function DashboardContent() {
           <div className="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 rounded-xl overflow-hidden">
-                <video src="/bankr-computer.mp4" autoPlay loop muted playsInline className="w-12 h-12 object-contain" />
+                <Image src="/logo.png" alt="BNKRSTR" width={48} height={48} />
               </div>
               <div>
                 <h3 className="font-semibold">Token overview</h3>
