@@ -17,10 +17,10 @@ const scaffoldConfig = {
   // Target Base mainnet for production
   targetNetworks: [chains.base],
   pollingInterval: 30000,
-  alchemyApiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || DEFAULT_ALCHEMY_API_KEY,
+  alchemyApiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || "GFFnS7_zmrBjrUOpH-W5n",
   rpcOverrides: {
-    // Use public Base RPC
-    [chains.base.id]: "https://mainnet.base.org",
+    // Use Alchemy for faster RPC
+    [chains.base.id]: process.env.NEXT_PUBLIC_BASE_RPC || "https://base-mainnet.g.alchemy.com/v2/GFFnS7_zmrBjrUOpH-W5n",
   },
   walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || "3a8170812b534d0ff9d794f19a901d64",
   // Allow external wallets on production
