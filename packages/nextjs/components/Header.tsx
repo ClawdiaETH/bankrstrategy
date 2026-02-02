@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { hardhat } from "viem/chains";
@@ -80,7 +81,7 @@ export const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <span className="text-2xl">🐚</span>
+            <Image src="/logo.png" alt="BNKRSTR" width={32} height={32} className="rounded-lg" />
             <div className="hidden sm:block">
               <span className="font-bold text-white group-hover:text-orange-400 transition-colors">BankrStrategy</span>
               <span className="text-zinc-500 text-xs block">Floor sweeper on Base</span>
