@@ -218,9 +218,26 @@ export default function DashboardContent() {
     return () => clearInterval(interval);
   }, [publicClient, address]);
 
-  // Fetch treasury NFTs from OpenSea
+  // Fetch treasury NFTs from OpenSea (with caching for speed)
   useEffect(() => {
+    const CACHE_KEY = "bnkrstr_treasury_nfts";
+    const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
     async function fetchTreasuryNfts() {
+      // Check cache first for instant load
+      try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const { data, timestamp } = JSON.parse(cached);
+          if (Date.now() - timestamp < CACHE_TTL) {
+            setTreasuryNfts(data);
+            return; // Use cache, skip fetch
+          }
+        }
+      } catch {
+        // Cache read failed, continue to fetch
+      }
+
       try {
         // Fetch NFTs owned by treasury
         const nftsRes = await fetch(
@@ -230,16 +247,24 @@ export default function DashboardContent() {
 
         if (!nftsData.nfts) return;
 
-        // For each NFT, try to get sale price from events
-        const nftsWithPrices: TreasuryNFT[] = await Promise.all(
+        // First, show NFTs immediately without prices
+        const nftsBasic: TreasuryNFT[] = nftsData.nfts.map((nft: { identifier: string; name: string }) => ({
+          tokenId: nft.identifier,
+          name: nft.name || `Bankr Club #${nft.identifier}`,
+          price: "loading...",
+          date: "—",
+        }));
+        nftsBasic.sort((a, b) => Number(b.tokenId) - Number(a.tokenId));
+        setTreasuryNfts(nftsBasic);
+
+        // Then fetch prices in parallel (not blocking)
+        const nftsWithPrices = await Promise.all(
           nftsData.nfts.map(async (nft: { identifier: string; name: string }) => {
             try {
               const eventsRes = await fetch(
                 `${OPENSEA_API}/events/chain/base/contract/${CONTRACTS.bankrClub}/nfts/${nft.identifier}`,
               );
               const eventsData = await eventsRes.json();
-
-              // Find the most recent sale event
               const saleEvent = eventsData.asset_events?.find((e: { event_type: string }) => e.event_type === "sale");
 
               let price = "—";
@@ -253,36 +278,33 @@ export default function DashboardContent() {
                   year: "numeric",
                 });
               }
-
-              return {
-                tokenId: nft.identifier,
-                name: nft.name || `Bankr Club #${nft.identifier}`,
-                price,
-                date,
-                source: "sweeper",
-              };
+              return { tokenId: nft.identifier, name: nft.name || `Bankr Club #${nft.identifier}`, price, date };
             } catch {
               return {
                 tokenId: nft.identifier,
                 name: nft.name || `Bankr Club #${nft.identifier}`,
                 price: "—",
                 date: "—",
-                source: "sweeper",
               };
             }
           }),
         );
 
-        // Sort by tokenId descending (newest first)
         nftsWithPrices.sort((a, b) => Number(b.tokenId) - Number(a.tokenId));
         setTreasuryNfts(nftsWithPrices);
+
+        // Cache for next load
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify({ data: nftsWithPrices, timestamp: Date.now() }));
+        } catch {
+          // localStorage full or unavailable
+        }
       } catch (e) {
         console.error("Failed to fetch treasury NFTs:", e);
       }
     }
 
     fetchTreasuryNfts();
-    // Refresh every 60s (less frequent than contract data)
     const interval = setInterval(fetchTreasuryNfts, 60000);
     return () => clearInterval(interval);
   }, []);
