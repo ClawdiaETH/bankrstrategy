@@ -18,8 +18,16 @@ const CONTRACTS = {
   treasury: "0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216" as `0x${string}`,
 };
 
-// Historical data for NFT #589 (bought manually before sweeper)
-const MANUAL_NFT_PURCHASE = BigInt("247980820000000000"); // 0.248 ETH for #589
+// OpenSea API for fetching treasury NFTs
+const OPENSEA_API = "https://api.opensea.io/api/v2";
+
+interface TreasuryNFT {
+  tokenId: string;
+  name: string;
+  price?: string;
+  date?: string;
+  source?: string;
+}
 
 const LINKS = {
   trade: `https://aerodrome.finance/swap?from=eth&to=${CONTRACTS.token}`,
@@ -108,6 +116,7 @@ export default function DashboardContent() {
   const [sweeperBalance, setSweeperBalance] = useState<bigint>(BigInt(0));
   const [rewardsBalance, setRewardsBalance] = useState<bigint>(BigInt(0));
   const [treasuryNftCount, setTreasuryNftCount] = useState<bigint>(BigInt(0));
+  const [treasuryNfts, setTreasuryNfts] = useState<TreasuryNFT[]>([]);
 
   // Fetch data - separate try/catches so one failure doesn't block others
   useEffect(() => {
@@ -208,6 +217,75 @@ export default function DashboardContent() {
     const interval = setInterval(fetchData, 15000); // Refresh every 15s
     return () => clearInterval(interval);
   }, [publicClient, address]);
+
+  // Fetch treasury NFTs from OpenSea
+  useEffect(() => {
+    async function fetchTreasuryNfts() {
+      try {
+        // Fetch NFTs owned by treasury
+        const nftsRes = await fetch(
+          `${OPENSEA_API}/chain/base/account/${CONTRACTS.treasury}/nfts?collection=bankr-club`,
+        );
+        const nftsData = await nftsRes.json();
+
+        if (!nftsData.nfts) return;
+
+        // For each NFT, try to get sale price from events
+        const nftsWithPrices: TreasuryNFT[] = await Promise.all(
+          nftsData.nfts.map(async (nft: { identifier: string; name: string }) => {
+            try {
+              const eventsRes = await fetch(
+                `${OPENSEA_API}/events/chain/base/contract/${CONTRACTS.bankrClub}/nfts/${nft.identifier}`,
+              );
+              const eventsData = await eventsRes.json();
+
+              // Find the most recent sale event
+              const saleEvent = eventsData.asset_events?.find((e: { event_type: string }) => e.event_type === "sale");
+
+              let price = "—";
+              let date = "—";
+              if (saleEvent) {
+                const ethPrice = Number(saleEvent.payment?.quantity || 0) / 1e18;
+                price = `${ethPrice.toFixed(4)} ETH`;
+                date = new Date(saleEvent.timestamp * 1000).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                });
+              }
+
+              return {
+                tokenId: nft.identifier,
+                name: nft.name || `Bankr Club #${nft.identifier}`,
+                price,
+                date,
+                source: "sweeper",
+              };
+            } catch {
+              return {
+                tokenId: nft.identifier,
+                name: nft.name || `Bankr Club #${nft.identifier}`,
+                price: "—",
+                date: "—",
+                source: "sweeper",
+              };
+            }
+          }),
+        );
+
+        // Sort by tokenId descending (newest first)
+        nftsWithPrices.sort((a, b) => Number(b.tokenId) - Number(a.tokenId));
+        setTreasuryNfts(nftsWithPrices);
+      } catch (e) {
+        console.error("Failed to fetch treasury NFTs:", e);
+      }
+    }
+
+    fetchTreasuryNfts();
+    // Refresh every 60s (less frequent than contract data)
+    const interval = setInterval(fetchTreasuryNfts, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSweep = async () => {
     if (!walletClient || !publicClient) return;
@@ -445,9 +523,7 @@ export default function DashboardContent() {
             </div>
             <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
               <div className="text-3xl font-bold text-green-400">
-                {formatEthValue(
-                  (sweeperStats?.ethSpent || BigInt(0)) + (sweeperV1Stats?.ethSpent || BigInt(0)) + MANUAL_NFT_PURCHASE,
-                )}
+                {formatEthValue((sweeperStats?.ethSpent || BigInt(0)) + (sweeperV1Stats?.ethSpent || BigInt(0)))}
               </div>
               <div className="text-sm text-zinc-500">ETH spent</div>
             </div>
@@ -464,42 +540,20 @@ export default function DashboardContent() {
           <div className="p-4 rounded-xl bg-zinc-800/30 border border-zinc-700/50">
             <h3 className="font-semibold mb-3 text-sm text-zinc-400">Purchase History</h3>
             <div className="space-y-2">
-              {Number(treasuryNftCount) > 0 ? (
-                <>
-                  {Number(treasuryNftCount) > 2 && (
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
-                      <div className="flex items-center gap-3">
-                        <span className="text-2xl">🖼️</span>
-                        <div>
-                          <div className="font-medium">Bankr Club #657</div>
-                          <div className="text-xs text-zinc-500">Feb 2, 2026 (via new sweeper)</div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-medium text-green-400">0.2800 ETH</div>
-                        <a
-                          href="https://opensea.io/assets/base/0x9fab8c51f911f0ba6dab64fd6e979bcf6424ce82/657"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs text-purple-400 hover:text-purple-300"
-                        >
-                          View on OpenSea ↗
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
+              {treasuryNfts.length > 0 ? (
+                treasuryNfts.map(nft => (
+                  <div key={nft.tokenId} className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">🖼️</span>
                       <div>
-                        <div className="font-medium">Bankr Club #994</div>
-                        <div className="text-xs text-zinc-500">Feb 1, 2026 (via new sweeper)</div>
+                        <div className="font-medium">{nft.name}</div>
+                        <div className="text-xs text-zinc-500">{nft.date}</div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-medium text-green-400">0.2767 ETH</div>
+                      <div className="font-medium text-green-400">{nft.price}</div>
                       <a
-                        href="https://opensea.io/assets/base/0x9fab8c51f911f0ba6dab64fd6e979bcf6424ce82/994"
+                        href={`https://opensea.io/assets/base/${CONTRACTS.bankrClub.toLowerCase()}/${nft.tokenId}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-xs text-purple-400 hover:text-purple-300"
@@ -508,29 +562,9 @@ export default function DashboardContent() {
                       </a>
                     </div>
                   </div>
-                  {Number(treasuryNftCount) > 1 && (
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
-                      <div className="flex items-center gap-3">
-                        <span className="text-2xl">🖼️</span>
-                        <div>
-                          <div className="font-medium">Bankr Club #589</div>
-                          <div className="text-xs text-zinc-500">Feb 1, 2026 (via old sweeper)</div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-medium text-green-400">0.2480 ETH</div>
-                        <a
-                          href="https://opensea.io/assets/base/0x9fab8c51f911f0ba6dab64fd6e979bcf6424ce82/589"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs text-purple-400 hover:text-purple-300"
-                        >
-                          View on OpenSea ↗
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                </>
+                ))
+              ) : Number(treasuryNftCount) > 0 ? (
+                <div className="text-center py-4 text-zinc-500">Loading NFTs...</div>
               ) : (
                 <div className="text-center py-4 text-zinc-500">No NFTs purchased yet</div>
               )}
