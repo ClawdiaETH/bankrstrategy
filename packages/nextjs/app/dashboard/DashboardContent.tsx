@@ -466,6 +466,28 @@ export default function DashboardContent() {
             <div className="space-y-2">
               {Number(treasuryNftCount) > 0 ? (
                 <>
+                  {Number(treasuryNftCount) > 2 && (
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl">🖼️</span>
+                        <div>
+                          <div className="font-medium">Bankr Club #657</div>
+                          <div className="text-xs text-zinc-500">Feb 2, 2026 (via new sweeper)</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-medium text-green-400">0.2800 ETH</div>
+                        <a
+                          href="https://opensea.io/assets/base/0x9fab8c51f911f0ba6dab64fd6e979bcf6424ce82/657"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-purple-400 hover:text-purple-300"
+                        >
+                          View on OpenSea ↗
+                        </a>
+                      </div>
+                    </div>
+                  )}
                   <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">🖼️</span>
