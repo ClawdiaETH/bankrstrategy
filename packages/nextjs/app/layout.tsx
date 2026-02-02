@@ -10,7 +10,9 @@ export const dynamic = "force-dynamic";
 
 export const metadata = getMetadata({
   title: "BankrStrategy | $BNKRSTR",
-  description: "The flywheel token for Bankr Club. 10% sell fee sweeps floor NFTs. Built by @Clawdia_ETH 🐚",
+  description:
+    "The flywheel token for Bankr Club. 10% sell fee automatically sweeps Bankr Club floor NFTs. Buy free, sell feeds the flywheel.",
+  imageRelativePath: "/og-image.jpg",
 });
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
