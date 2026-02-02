@@ -263,7 +263,7 @@ export default function DashboardContent() {
     return () => clearInterval(interval);
   }, [publicClient, address]);
 
-  // Fetch treasury NFTs from Alchemy API
+  // Fetch treasury NFTs from API (Alchemy + OpenSea)
   useEffect(() => {
     async function fetchTreasuryNfts() {
       try {
@@ -273,12 +273,20 @@ export default function DashboardContent() {
         const data = await res.json();
         if (data.nfts?.length) {
           const nfts: TreasuryNFT[] = data.nfts.map(
-            (nft: { tokenId: string; name: string; imageUrl?: string; description?: string; floorPrice?: number }) => ({
+            (nft: {
+              tokenId: string;
+              name: string;
+              imageUrl?: string;
+              description?: string;
+              purchasePrice?: number;
+              purchaseDate?: string;
+            }) => ({
               tokenId: nft.tokenId,
               name: nft.name,
               imageUrl: nft.imageUrl,
               description: nft.description,
-              price: nft.floorPrice ? `~${nft.floorPrice.toFixed(4)} ETH floor` : undefined,
+              price: nft.purchasePrice ? `${nft.purchasePrice.toFixed(4)} ETH` : undefined,
+              date: nft.purchaseDate,
             }),
           );
           setTreasuryNfts(nfts);
