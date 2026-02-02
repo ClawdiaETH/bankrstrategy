@@ -116,6 +116,7 @@ export default function DashboardContent() {
   const [rewardsBalance, setRewardsBalance] = useState<bigint>(BigInt(0));
   const [treasuryNftCount, setTreasuryNftCount] = useState<bigint>(BigInt(0));
   const [treasuryNfts, setTreasuryNfts] = useState<TreasuryNFT[]>([]);
+  const [floorPrice, setFloorPrice] = useState<number | null>(null);
 
   // Load from Edge Config cache first (instant)
   useEffect(() => {
@@ -290,6 +291,9 @@ export default function DashboardContent() {
             }),
           );
           setTreasuryNfts(nfts);
+        }
+        if (data.floorPrice) {
+          setFloorPrice(data.floorPrice);
         }
       } catch (error) {
         console.error("Failed to fetch treasury NFTs:", error);
@@ -576,7 +580,7 @@ export default function DashboardContent() {
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
             <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
               <div className="text-3xl font-bold text-purple-400">{Number(treasuryNftCount)}</div>
               <div className="text-sm text-zinc-500">NFTs owned</div>
@@ -594,6 +598,10 @@ export default function DashboardContent() {
                 )}
               </div>
               <div className="text-sm text-zinc-500">ETH ready</div>
+            </div>
+            <div className="p-4 rounded-xl bg-zinc-800/50 text-center">
+              <div className="text-3xl font-bold text-pink-400">{floorPrice ? floorPrice.toFixed(2) : "—"}</div>
+              <div className="text-sm text-zinc-500">floor price</div>
             </div>
           </div>
 
