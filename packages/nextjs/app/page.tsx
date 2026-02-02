@@ -38,10 +38,16 @@ const Home: NextPage = () => {
             🟢 Live on Base
           </div>
 
-          {/* Logo */}
+          {/* Bankr Computer */}
           <div className="relative mb-8 group">
             <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-amber-500 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
-            <Image src="/logo.png" alt="BankrStrategy" width={180} height={180} className="relative drop-shadow-2xl" />
+            <Image
+              src="/bankr-computer.png"
+              alt="BankrStrategy"
+              width={200}
+              height={160}
+              className="relative drop-shadow-2xl"
+            />
           </div>
 
           {/* Title */}

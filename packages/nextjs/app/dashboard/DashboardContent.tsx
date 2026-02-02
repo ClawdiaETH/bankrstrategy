@@ -362,7 +362,7 @@ export default function DashboardContent() {
         <div className="text-center mb-12">
           <Link href="/" className="inline-block">
             <div className="flex justify-center mb-6">
-              <Image src="/logo.png" alt="BankrStrategy" width={80} height={80} />
+              <Image src="/bankr-computer.png" alt="BankrStrategy" width={120} height={96} />
             </div>
           </Link>
           <h1 className="text-4xl md:text-5xl font-bold mb-2">
