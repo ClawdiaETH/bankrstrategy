@@ -59,9 +59,13 @@ const Home: NextPage = () => {
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-zinc-400 mb-4 font-medium">The flywheel token for Bankr Club</p>
-          <p className="text-base text-zinc-500 mb-10 max-w-lg">
+          <p className="text-base text-zinc-500 mb-4 max-w-lg">
             10% sell fee automatically sweeps floor NFTs. Buy free, sell feeds the flywheel.
           </p>
+          {/* Burn Notice */}
+          <div className="mb-8 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-sm font-medium animate-pulse">
+            🔥 500M tokens burned (50% of supply) — effective supply now 500M
+          </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -109,8 +113,9 @@ const Home: NextPage = () => {
         <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-3xl md:text-4xl font-bold text-orange-400">1B</div>
-              <div className="text-sm text-zinc-500 uppercase tracking-wider mt-1">Total supply</div>
+              <div className="text-3xl md:text-4xl font-bold text-orange-400">500M</div>
+              <div className="text-sm text-zinc-500 uppercase tracking-wider mt-1">Circulating supply</div>
+              <div className="text-xs text-zinc-600 mt-1">500M burned 🔥</div>
             </div>
             <div>
               <div className="text-3xl md:text-4xl font-bold text-amber-400">10%</div>
@@ -121,8 +126,9 @@ const Home: NextPage = () => {
               <div className="text-sm text-zinc-500 uppercase tracking-wider mt-1">Buy fee</div>
             </div>
             <div>
-              <div className="text-3xl md:text-4xl font-bold text-orange-400">8%</div>
-              <div className="text-sm text-zinc-500 uppercase tracking-wider mt-1">To NFT sweeps</div>
+              <div className="text-3xl md:text-4xl font-bold text-purple-400">7.57%</div>
+              <div className="text-sm text-zinc-500 uppercase tracking-wider mt-1">Pool liquidity</div>
+              <div className="text-xs text-zinc-600 mt-1">doubled from 3.79%</div>
             </div>
           </div>
         </div>
