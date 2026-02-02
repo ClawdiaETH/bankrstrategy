@@ -48,7 +48,7 @@ interface OpenSeaStatsResponse {
 }
 
 // Get purchase price from OpenSea sale events
-async function getPurchasePrice(tokenId: string): Promise<{ price: number; date: string } | null> {
+async function getPurchasePrice(tokenId: string): Promise<{ price: number; date: string; timestamp: number } | null> {
   if (!OPENSEA_API_KEY) return null;
 
   try {
@@ -79,12 +79,16 @@ async function getPurchasePrice(tokenId: string): Promise<{ price: number; date:
     if (purchaseEvent) {
       const priceWei = BigInt(purchaseEvent.payment.quantity);
       const priceEth = Number(priceWei) / 1e18;
-      const date = new Date(purchaseEvent.event_timestamp * 1000).toLocaleDateString("en-US", {
+      const timestamp = purchaseEvent.event_timestamp;
+      const date = new Date(timestamp * 1000).toLocaleString("en-US", {
         month: "short",
         day: "numeric",
         year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
       });
-      return { price: priceEth, date };
+      return { price: priceEth, date, timestamp };
     }
   } catch (error) {
     console.error(`Failed to get purchase price for token ${tokenId}:`, error);
@@ -145,9 +149,13 @@ export async function GET() {
           imageUrl: nft.image?.cachedUrl || nft.image?.pngUrl || nft.image?.thumbnailUrl || null,
           purchasePrice: purchaseInfo?.price,
           purchaseDate: purchaseInfo?.date,
+          purchaseTimestamp: purchaseInfo?.timestamp || 0,
         };
       }),
     );
+
+    // Sort by purchase timestamp, newest first
+    nftsWithPrices.sort((a, b) => b.purchaseTimestamp - a.purchaseTimestamp);
 
     return NextResponse.json({
       nfts: nftsWithPrices,

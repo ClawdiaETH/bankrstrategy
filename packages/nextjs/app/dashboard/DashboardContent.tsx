@@ -616,7 +616,8 @@ export default function DashboardContent() {
                     href={`https://opensea.io/assets/base/${CONTRACTS.bankrClub.toLowerCase()}/${nft.tokenId}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-4 p-3 rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-purple-500/50 hover:bg-zinc-800 transition-all"
+                    title="View on OpenSea"
+                    className="flex items-center gap-4 p-3 rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-purple-500/50 hover:bg-zinc-800 transition-all group"
                   >
                     {/* Small NFT Thumbnail */}
                     <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-zinc-700/50">
@@ -637,6 +638,11 @@ export default function DashboardContent() {
                     <div className="text-right flex-shrink-0">
                       <div className="text-green-400 font-semibold">{nft.price}</div>
                       <div className="text-xs text-zinc-500">purchased</div>
+                    </div>
+
+                    {/* Hover indicator */}
+                    <div className="hidden group-hover:flex items-center text-purple-400 text-sm flex-shrink-0">
+                      OpenSea ↗
                     </div>
                   </a>
                 ))}
