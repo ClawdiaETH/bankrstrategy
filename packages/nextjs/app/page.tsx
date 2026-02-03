@@ -318,7 +318,8 @@ const Home: NextPage = () => {
                 1% of fees
               </div>
               <p className="text-zinc-400 text-sm leading-relaxed">
-                Supports ongoing development, infrastructure, and ecosystem growth. Ensuring sustainable innovation.
+                Automatically buys back and burns $CLAWDIA tokens. Creates deflationary pressure tied to $BNKRSTR
+                trading volume.
               </p>
             </div>
           </div>
