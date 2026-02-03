@@ -60,7 +60,8 @@ const Home: NextPage = () => {
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-zinc-400 mb-4 font-medium">The flywheel token for Bankr Club</p>
           <p className="text-base text-zinc-500 mb-4 max-w-lg">
-            10% sell fee automatically sweeps floor NFTs. Buy free, sell feeds the flywheel.
+            10% sell fee: 8% sweeps floor NFTs, 1% rewards holders, 1% burns $CLAWDIA. Buy free, sell feeds the
+            flywheel.
           </p>
           {/* Burn Notice */}
           <div className="mb-8 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-sm font-medium animate-pulse">
@@ -138,7 +139,7 @@ const Home: NextPage = () => {
       <div className="max-w-6xl mx-auto px-6 py-16">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Trade $BNKRSTR</h2>
         <p className="text-zinc-500 text-center mb-10 max-w-lg mx-auto">
-          Buy free, sell feeds the flywheel. Every sell sweeps the Bankr Club floor.
+          Buy free, sell feeds the triple flywheel: floor sweeps, holder rewards, and $CLAWDIA burns.
         </p>
         <TradeWidget />
       </div>
@@ -392,7 +393,7 @@ const Home: NextPage = () => {
         <div className="relative p-12 rounded-3xl bg-gradient-to-br from-orange-500/10 via-zinc-900 to-amber-500/10 border border-zinc-800 text-center">
           <h2 className="text-3xl font-bold mb-4">Join the flywheel</h2>
           <p className="text-zinc-400 mb-8 max-w-md mx-auto">
-            Trade on Aerodrome. Every sell sweeps the Bankr Club floor.
+            Trade on Aerodrome. Every sell triggers the triple flywheel mechanism.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
