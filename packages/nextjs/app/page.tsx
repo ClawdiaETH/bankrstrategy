@@ -60,8 +60,8 @@ const Home: NextPage = () => {
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-zinc-400 mb-4 font-medium">The flywheel token for Bankr Club</p>
           <p className="text-base text-zinc-500 mb-4 max-w-lg">
-            10% sell fee: 8% sweeps floor NFTs, 1% rewards holders, 1% burns $CLAWDIA. Buy free, sell feeds the
-            flywheel.
+            10% sell fee: 8% doubles pool liquidity, 1% rewards holders, 1% buys and burns $BNKRSTR. Buy free, sell
+            feeds the flywheel.
           </p>
           {/* Burn Notice */}
           <div className="mb-8 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-sm font-medium animate-pulse">
@@ -139,7 +139,7 @@ const Home: NextPage = () => {
       <div className="max-w-6xl mx-auto px-6 py-16">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Trade $BNKRSTR</h2>
         <p className="text-zinc-500 text-center mb-10 max-w-lg mx-auto">
-          Buy free, sell feeds the triple flywheel: floor sweeps, holder rewards, and $CLAWDIA burns.
+          Buy free, sell feeds the triple flywheel: pool liquidity, holder rewards, and $BNKRSTR burns.
         </p>
         <TradeWidget />
       </div>
@@ -149,8 +149,8 @@ const Home: NextPage = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Deflationary Flywheel 🔄</h2>
           <p className="text-zinc-500 max-w-2xl mx-auto">
-            BNKRSTR dev fees automatically buy back and burn CLAWDIA tokens, creating sustainable deflationary pressure
-            tied to trading volume.
+            True deflationary pressure on BNKRSTR itself. More trading → more fees → more BNKRSTR burned → reduced
+            supply. Direct flywheel effect for the traded token. Contract renounced - fully trustless.
           </p>
         </div>
 
@@ -168,16 +168,17 @@ const Home: NextPage = () => {
               <span className="text-purple-400 text-2xl">🔄</span>
             </div>
             <h3 className="text-xl font-semibold mb-2 text-purple-400">2. Auto Buyback</h3>
-            <p className="text-zinc-500 text-sm">When fees ≥ 0.05 ETH, automatically swap ETH → CLAWDIA via DEX</p>
+            <p className="text-zinc-500 text-sm">When fees ≥ 0.05 ETH, automatically swap ETH → BNKRSTR via DEX</p>
           </div>
 
           <div className="relative p-6 rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm">
             <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center mb-4">
               <span className="text-red-400 text-2xl">🔥</span>
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-red-400">3. Burn & Renounce</h3>
+            <h3 className="text-xl font-semibold mb-2 text-red-400">3. Burn BNKRSTR</h3>
             <p className="text-zinc-500 text-sm">
-              Send purchased CLAWDIA to dead address, eventually renounce ownership
+              Call burn() function to reduce BNKRSTR total supply. Creates direct deflationary pressure on the traded
+              token itself. Contract renounced - fully trustless.
             </p>
           </div>
         </div>
@@ -187,11 +188,14 @@ const Home: NextPage = () => {
             <div className="w-16 h-16 rounded-2xl bg-green-500/10 border border-green-500/30 flex items-center justify-center mx-auto mb-4">
               <span className="text-green-400 text-3xl">🐚</span>
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-green-400">CLAWDIA Deflation</h3>
+            <h3 className="text-xl font-semibold mb-2 text-green-400">True BNKRSTR Deflation</h3>
             <p className="text-zinc-500">
-              More BNKRSTR trading → More ETH fees → More CLAWDIA burned → True deflationary pressure
+              More BNKRSTR trading → More ETH fees → More BNKRSTR burned → Reduced supply creates direct deflationary
+              pressure on the traded token itself
             </p>
-            <div className="mt-4 text-sm text-zinc-600">Mechanism launching soon • Contract renouncement planned</div>
+            <div className="mt-4 text-sm text-green-400">
+              ✅ Mechanism active • Contract renounced • Fully trustless
+            </div>
           </div>
         </div>
       </div>
@@ -246,12 +250,12 @@ const Home: NextPage = () => {
             </div>
             <h3 className="text-xl font-semibold mb-3">How BankrStrategy helps</h3>
             <p className="text-zinc-400 text-sm leading-relaxed mb-4">
-              Every $BNKRSTR sell automatically sweeps Bankr Club NFTs from the floor. This creates constant buy
-              pressure, supports the floor price, and rewards existing holders.
+              Every $BNKRSTR sell strategically doubles pool liquidity, creating deeper trading markets and better price
+              stability for the ecosystem.
             </p>
             <ul className="space-y-2 text-sm text-zinc-500">
               <li className="flex items-center gap-2">
-                <span className="text-orange-400">✓</span> Sweeps floor NFTs automatically
+                <span className="text-orange-400">✓</span> Doubles BNKRSTR/WETH liquidity automatically
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-orange-400">✓</span> Rewards for NFT holders
@@ -277,14 +281,14 @@ const Home: NextPage = () => {
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative">
               <div className="w-14 h-14 rounded-xl bg-orange-500/10 flex items-center justify-center mb-6">
-                <span className="text-2xl">🧹</span>
+                <span className="text-2xl">💧</span>
               </div>
-              <h3 className="text-xl font-semibold mb-2">NFT sweeper</h3>
+              <h3 className="text-xl font-semibold mb-2">Pool liquidity</h3>
               <div className="inline-block px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-sm font-medium mb-4">
                 8% of fees
               </div>
               <p className="text-zinc-400 text-sm leading-relaxed">
-                Fees accumulate in the sweeper. When enough builds up, anyone can trigger a sweep to buy floor NFTs.
+                Fees automatically double BNKRSTR/WETH pool liquidity, improving trading depth and price stability.
               </p>
             </div>
           </div>
@@ -313,13 +317,13 @@ const Home: NextPage = () => {
               <div className="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center mb-6">
                 <span className="text-2xl">🛠️</span>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Dev fund</h3>
+              <h3 className="text-xl font-semibold mb-2">BNKRSTR burns</h3>
               <div className="inline-block px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-sm font-medium mb-4">
                 1% of fees
               </div>
               <p className="text-zinc-400 text-sm leading-relaxed">
-                Automatically buys back and burns $CLAWDIA tokens. Creates deflationary pressure tied to $BNKRSTR
-                trading volume.
+                Automatically buys back and burns $BNKRSTR tokens, reducing total supply. True deflationary flywheel
+                where the traded token itself gets burned.
               </p>
             </div>
           </div>
@@ -340,11 +344,11 @@ const Home: NextPage = () => {
             </span>
             <span className="text-zinc-600">→</span>
             <span className="px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 font-medium">
-              Sweep floor
+              Double liquidity
             </span>
             <span className="text-zinc-600">→</span>
             <span className="px-4 py-2 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 font-medium">
-              Floor rises
+              Better trading
             </span>
             <span className="text-zinc-600">→</span>
             <span className="px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 font-medium">
@@ -394,7 +398,7 @@ const Home: NextPage = () => {
         <div className="relative p-12 rounded-3xl bg-gradient-to-br from-orange-500/10 via-zinc-900 to-amber-500/10 border border-zinc-800 text-center">
           <h2 className="text-3xl font-bold mb-4">Join the flywheel</h2>
           <p className="text-zinc-400 mb-8 max-w-md mx-auto">
-            Trade on Aerodrome. Every sell triggers the triple flywheel mechanism.
+            Trade on Aerodrome. Every sell triggers the trustless triple flywheel: liquidity, rewards, burns.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
