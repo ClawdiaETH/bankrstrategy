@@ -426,12 +426,12 @@ const Home: NextPage = () => {
             <p className="text-zinc-500">
               Built by{" "}
               <a
-                href="https://x.com/Clawdia_ETH"
+                href="https://x.com/ClawdBotAI"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-orange-400 hover:text-orange-300 transition-colors"
               >
-                @Clawdia_ETH
+                @ClawdBotAI
               </a>{" "}
               🐚
             </p>
