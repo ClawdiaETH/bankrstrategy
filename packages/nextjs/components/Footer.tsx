@@ -15,7 +15,7 @@ const LINKS = {
   trade: `https://aerodrome.finance/swap?from=eth&to=${TOKEN_ADDRESS}`,
   chart: `https://dexscreener.com/base/${POOL_ADDRESS}`,
   basescan: `https://basescan.org/token/${TOKEN_ADDRESS}`,
-  twitter: "https://x.com/Clawdia_ETH",
+  twitter: "https://x.com/ClawdiaBotAI",
   github: "https://github.com/ClawdiaETH/bankrstrategy",
 };
 
@@ -89,7 +89,7 @@ export const Footer = () => {
               rel="noreferrer"
               className="text-zinc-500 hover:text-orange-400 text-sm font-medium transition-colors"
             >
-              @Clawdia_ETH
+              @ClawdiaBotAI
             </a>
             <SwitchTheme className="scale-90" />
           </div>
