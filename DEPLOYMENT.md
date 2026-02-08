@@ -10,7 +10,7 @@
 | **NFT Sweeper** | [`0xB05600dd636B419E2F55A819d76CD783eE46bb8A`](https://basescan.org/address/0xB05600dd636B419E2F55A819d76CD783eE46bb8A) | ✅ |
 | **Holder Rewards** | [`0x8d0Dc9E8A42743a0256fd40B70f463e4e0c587d9`](https://basescan.org/address/0x8d0Dc9E8A42743a0256fd40B70f463e4e0c587d9) | ✅ |
 | **Aerodrome Pool** | [`0xdd2E1CF351D510b0aBA571b65878785126E936d3`](https://basescan.org/address/0xdd2E1CF351D510b0aBA571b65878785126E936d3) | — |
-| **Treasury** | [`0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216`](https://basescan.org/address/0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216) | — |
+| **Treasury** | [`0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9`](https://basescan.org/address/0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9) | — |
 
 ## Treasury Holdings
 
@@ -83,7 +83,7 @@ NFT sent to Treasury
 - **Trade:** https://aerodrome.finance/swap?from=eth&to=0xb80bF44D8bC12b4d1c3b457415e94e554F35d71A
 - **Chart:** https://dexscreener.com/base/0xdd2E1CF351D510b0aBA571b65878785126E936d3
 - **Token:** https://basescan.org/token/0xb80bF44D8bC12b4d1c3b457415e94e554F35d71A
-- **Treasury NFTs:** https://opensea.io/0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216
+- **Treasury NFTs:** https://opensea.io/0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9
 
 ## Author
 

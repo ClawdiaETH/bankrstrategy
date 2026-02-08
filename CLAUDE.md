@@ -17,7 +17,7 @@ BankrStrategy ($BNKRSTR) is a fee-on-transfer token on Base that uses 10% sell f
 | Token | `0xb80bF44D8bC12b4d1c3b457415e94e554F35d71A` |
 | Sweeper | `0xB05600dd636B419E2F55A819d76CD783eE46bb8A` |
 | Rewards | `0x8d0Dc9E8A42743a0256fd40B70f463e4e0c587d9` |
-| Treasury | `0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216` |
+| Treasury | `0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9` |
 | Bankr Club NFT | `0x9FAb8C51f911f0ba6dab64fD6E979BcF6424Ce82` |
 
 ## Architecture

@@ -15,7 +15,7 @@ const CONTRACTS = {
   rewards: "0x8d0Dc9E8A42743a0256fd40B70f463e4e0c587d9" as `0x${string}`,
   pool: "0xdd2E1CF351D510b0aBA571b65878785126E936d3" as `0x${string}`,
   bankrClub: "0x9FAb8C51f911f0ba6dab64fD6E979BcF6424Ce82" as `0x${string}`,
-  treasury: "0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216" as `0x${string}`,
+  treasury: "0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9" as `0x${string}`,
 };
 
 interface TreasuryNFT {

@@ -8,7 +8,7 @@ const ALCHEMY_BASE_URL = `https://base-mainnet.g.alchemy.com/nft/v3/${ALCHEMY_AP
 const OPENSEA_BASE_URL = "https://api.opensea.io/api/v2";
 
 // Contract addresses
-const TREASURY_ADDRESS = "0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216";
+const TREASURY_ADDRESS = "0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9";
 const BANKR_CLUB_ADDRESS = "0x9FAb8C51f911f0ba6dab64fD6E979BcF6424Ce82";
 const BANKR_CLUB_SLUG = "bankr-club";
 

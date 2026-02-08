@@ -19,7 +19,7 @@ contract DeployNewSweeperScript is Script {
     address constant BANKR_CLUB_NFT = 0x9FAb8C51f911f0ba6dab64fD6E979BcF6424Ce82;
     
     // NFT treasury (where purchased NFTs go) - using WETH as placeholder or signing wallet
-    address constant NFT_TREASURY = 0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216;
+    address constant NFT_TREASURY = 0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9;
 
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("DEPLOYER_PRIVATE_KEY");

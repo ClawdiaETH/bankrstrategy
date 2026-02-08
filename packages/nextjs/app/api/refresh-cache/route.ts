@@ -11,7 +11,7 @@ const CONTRACTS = {
   sweeperV1: "0xAAAB525b6C33C33DaA2dCcb840FCa8d5209CB1b1" as `0x${string}`,
   rewards: "0x8d0Dc9E8A42743a0256fd40B70f463e4e0c587d9" as `0x${string}`,
   bankrClub: "0x9FAb8C51f911f0ba6dab64fD6E979BcF6424Ce82" as `0x${string}`,
-  treasury: "0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216" as `0x${string}`,
+  treasury: "0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9" as `0x${string}`,
 };
 
 const RPC_URL = process.env.NEXT_PUBLIC_BASE_RPC || "https://base-mainnet.g.alchemy.com/v2/GFFnS7_zmrBjrUOpH-W5n";
